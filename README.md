@@ -4,7 +4,7 @@ This package main purpose is to test and compare the multiple existing avoidance
 
 ## How does it work ?
 The avoidance benchmark consist mainly of a quadrotor simulator, multiple custom created worlds, a benchmark manager and some scripts to compute the benchmark indicators. It is based on Ros Kinetic & Gazebo 7.0.0.
-The simulator is RotorS from the ETHZ which is the most common multirotor model in ROS. On the 16/08/2018, it is possible to use the main branch from the ETHZ project available [here](https://github.com/ethz-asl/rotors_simulator). It will probably be possible to use this main branch in the future. In case there are some major modifications that break the compability between their project and mine. A fork of RotorS from the 16/08/2019 is available [here](https://github.com/ttdm/rotors_simulator).
+The simulator is RotorS from the ETHZ which is the most common multirotor model in ROS. On the 16/08/2018, it is possible to use the main branch from the ETHZ project available [here](https://github.com/ethz-asl/rotors_simulator). It will probably be possible to use this main branch in the future. In case there are some major modifications that break the compability between their project and mine. A fork of RotorS from the 01/04/2019 is available [here](https://github.com/ttdm/rotors_simulator).
 Worlds are created through a custom world plugin that has been created specifically for this purpose. This plugin generates GAZEBO forests of 6700m2. The density of the forest is a parameter during its creation which allow some diversity in the test environments. The chosen environment is a forest since it is in the literature the most common environment to test avoidance algorithms for quadrotors.
 The benchmark manager send the coordinates where the drone should go and log informations in order to output logical indicators to characterize the tests.
 Finally, the scripts allow the use of the package in a few simple operations for simplicity.
@@ -20,7 +20,7 @@ Most of the documentation is available in the 'doc' directory. There you can fin
 - the current TODO list and some other minor doc files.
 
 ## Citations
-Feel free to use this package at your convenience but please cite https://github.com/ttdm/avoidance_benchmark if you do so. If your usage include the RotorS simulator, please cite the ETHZ for their simulator :
+Feel free to use this package at your convenience but please cite https://github.com/Gipsa-lab-PFP/BOARR if you do so. If your usage include the RotorS simulator, please cite the ETHZ for their simulator :
 ```bibtex
 @Inbook{Furrer2016,
 author="Furrer, Fadri
@@ -101,14 +101,7 @@ $ cd ..
 $ catkin_make
 ```
 
-5. Add a path to your GAZEBO_MODEL_PATH and you GAZEBO_PLUGIN_PATH :
-```
-export GAZEBO_PLUGIN_PATH=~/catkin_make_ws/src/avoidance_benchmark/worlds/worlds_creation_plugin/build:$GAZEBO_PLUGIN_PATH
-export GAZEBO_MODEL_PATH=~/catkin_make_ws/src/avoidance_benchmark/worlds/models:$HOME/.gazebo/models:$GAZEBO_MODEL_PATH
-```
-For convenience, you should add it to your ~/.bashrc
-
-6. Start one of the two example algorithm :
+5. Start one of the two example algorithm :
 ```
 $ cd ~/catkin_make_ws/src/avoidance_benchmark/scripts
 ```
@@ -123,6 +116,6 @@ $ ./dummy_perfect_benchmark
 
 ## Outputs
 
-In your ~/.ros directory, a new benchmark_results directory has been created. Each time you use a script, a directory with the date and hour of launch will be created.  
-Inside, you will always find a default_summary file. This file saves the value of the computed indicators of each flight. When doing hundreds of simulated flights, it is then the parsed file to compute the global indicators.  
+In your ~/.ros directory, a new benchmark_results directory has been created. Each time you use a script, a directory with the date and hour of launch will be created.
+Inside, you will always find a default_summary file. This file saves the value of the computed indicators of each flight. When doing hundreds of simulated flights, it is then the parsed file to compute the global indicators.
 Depending on the script you used, a default_image.jpg and a default_video.avi will also be created. They allow you to witness precisely what happen during your attempt. Those files are created during the demonstrator script.
