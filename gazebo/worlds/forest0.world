@@ -1,0 +1,3920 @@
+<?xml version ='1.0'?>
+<sdf version='1.6'>
+<world name='default'>
+  <plugin name="ros_interface_plugin" filename="librotors_gazebo_ros_interface_plugin.so"/>
+  <light name='sun' type='directional'>
+    <cast_shadows>1</cast_shadows>
+    <pose frame=''>0 0 10 0 -0 0</pose>
+    <diffuse>0.8 0.8 0.8 1</diffuse>
+    <specular>0.1 0.1 0.1 1</specular>
+    <attenuation>
+      <range>1000</range>
+      <constant>0.9</constant>
+      <linear>0.01</linear>
+      <quadratic>0.001</quadratic>
+    </attenuation>
+    <direction>-0.5 0.5 -1</direction>
+  </light>
+  <scene>
+    <sky>
+      <clouds>
+        <speed>12</speed>
+      </clouds>
+    </sky>
+    <ambient>0.4 0.4 0.4 1</ambient>
+    <background>0.7 0.7 0.7 1</background>
+    <shadows>1</shadows>
+  </scene>
+  <spherical_coordinates>
+    <surface_model>EARTH_WGS84</surface_model>
+    <latitude_deg>47.3667</latitude_deg>
+    <longitude_deg>8.55</longitude_deg>
+    <elevation>500</elevation>
+    <heading_deg>0</heading_deg>
+  </spherical_coordinates>
+  <physics name='default_physics' default='0' type='ode'>
+    <ode>
+      <solver>
+        <type>quick</type>
+        <iters>1000</iters>
+        <sor>1.3</sor>
+        <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+      </solver>
+      <constraints>
+        <cfm>0</cfm>
+        <erp>0.2</erp>
+        <contact_max_correcting_vel>100</contact_max_correcting_vel>
+        <contact_surface_layer>0.001</contact_surface_layer>
+      </constraints>
+    </ode>
+    <max_step_size>0.002</max_step_size>
+    <real_time_factor>1</real_time_factor>
+    <real_time_update_rate>500</real_time_update_rate>
+  </physics>
+  <gravity>0 0 -9.8</gravity>
+  <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+  <atmosphere type='adiabatic'/>
+  <model name='heightmap'>
+    <pose frame=''>0 0 0 0 -0 0</pose>
+    <static>1</static>
+    <link name='link'>
+      <collision name='collision'>
+        <geometry>
+          <heightmap>
+            <uri>model://heightmaps/3.img</uri>
+            <size>82 82 30</size>
+            <pos>0 0 0</pos>
+            <texture>
+              <size>10</size>
+              <diffuse>__default__</diffuse>
+              <normal>__default__</normal>
+            </texture>
+            <blend>
+              <min_height>0</min_height>
+              <fade_dist>0</fade_dist>
+            </blend>
+          </heightmap>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='visual_heightmap'>
+        <geometry>
+          <heightmap>
+            <texture>
+              <diffuse>file://media/materials/textures/dirt_diffusespecular.png</diffuse>
+              <normal>file://media/materials/textures/flat_normal.png</normal>
+              <size>1</size>
+            </texture>
+            <texture>
+              <diffuse>file://media/materials/textures/grass_diffusespecular.png</diffuse>
+              <normal>file://media/materials/textures/flat_normal.png</normal>
+              <size>1</size>
+            </texture>
+            <texture>
+              <diffuse>file://media/materials/textures/fungus_diffusespecular.png</diffuse>
+              <normal>file://media/materials/textures/flat_normal.png</normal>
+              <size>1</size>
+            </texture>
+            <blend>
+              <min_height>2</min_height>
+              <fade_dist>5</fade_dist>
+            </blend>
+            <blend>
+              <min_height>12</min_height>
+              <fade_dist>5</fade_dist>
+            </blend>
+            <uri>file://heightmaps/map3.img</uri>
+            <size>82 82 30</size>
+          </heightmap>
+        </geometry>
+      </visual>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>29.3659 -0.74908 4.35534 0 0 -1.51882</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>19.3856 1.16408 4.40009 0 0 -1.07803</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>20.9401 -4.08538 4.96342 0 -0 1.56662</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>5.99817 8.70398 3.5833 0 -0 0.353689</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/2.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/2.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>7.38219 19.172 2.41782 0 0 -0.020149</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>31.1339 4.00026 3.64675 0 -0 0.966255</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>31.9101 8.32085 3.13691 0 0 -0.966449</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>27.9268 16.9261 2.56475 0 0 -1.3685</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/13.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/13.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>19.5405 7.46601 3.70928 0 0 -0.821801</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>32.4035 2.37625 3.76871 0 0 -0.39185</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>17.7249 7.00303 3.80276 0 -0 1.35274</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>11.4492 24.2054 2.26538 0 0 -0.188072</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>15.6248 -5.73037 5.37374 0 0 -0.469869</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>25.2053 10.478 3.05399 0 -0 0.493935</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/0.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/0.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>32.7796 5.80147 3.30151 0 -0 0.578446</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>34.7326 7.41996 3.18138 0 -0 1.41379</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>34.3897 11.6663 2.89186 0 -0 0.375533</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/2.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/2.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>15.7843 18.7854 2.72276 0 0 -0.166315</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>17.3333 0.106712 4.63293 0 -0 0.177233</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>20.4983 -6.53578 5.31353 0 0 -1.24604</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/19.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/19.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>11.2052 7.71369 3.73211 0 -0 1.52212</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>29.3955 10.0999 3.00951 0 -0 0.784281</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>13.2102 -9.25758 5.84858 0 -0 0.265294</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>18.6804 0.446884 4.54899 0 0 -1.17601</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>29.4755 1.76365 4.02671 0 0 -1.33598</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>25.1879 -7.87377 5.81826 0 -0 0.935086</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/19.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/19.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>27.759 8.95126 3.25061 0 0 -1.27647</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>10.7346 8.6133 3.56797 0 0 -1.35049</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>7.01141 5.63394 3.93506 0 -0 0.23022</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>22.0141 10.6742 3.3092 0 -0 1.56309</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/0.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/0.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>33.0004 9.83784 2.95292 0 0 -1.05777</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>21.7207 17.0945 2.7522 0 0 -0.442441</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>18.3989 30.5533 2.31872 0 -0 0.096737</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>9.21032 -3.75041 5.15576 0 -0 0.778121</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>8.72074 -15.3344 7.00618 0 -0 1.04637</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>13.2031 8.17316 3.70119 0 -0 0.524004</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-12.9466 2.27976 3.81288 0 -0 0.406566</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-24.6162 18.1195 1.63645 0 0 -0.53764</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-24.5084 -6.53015 4.36846 0 -0 1.39516</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>15.9178 30.4036 2.23171 0 -0 0.550995</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-24.4923 28.482 0.931719 0 -0 0.382524</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-9.7197 -7.18689 5.76596 0 -0 0.546161</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-30.3944 8.16777 2.54978 0 -0 0.72449</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-19.6271 31.121 0.733707 0 -0 1.32167</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-5.63255 -10.8647 6.92217 0 -0 0.584432</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-16.3584 24.4418 1.22345 0 0 -0.534924</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/11.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-11.0746 -35.2688 10.7692 0 -0 1.44012</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>10.4062 -1.30496 4.57849 0 0 -1.18961</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-12.4679 13.652 2.3382 0 0 -0.636514</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/0.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/0.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-6.7152 15.6508 2.42948 0 0 -0.114101</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/18.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/18.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-11.3895 -30.383 9.34359 0 -0 0.714508</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-25.2287 4.51849 2.99592 0 -0 1.06174</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>22.5632 -28.5602 9.43753 0 0 -0.00463</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/12.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/12.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>17.4653 28.2608 2.17061 0 0 -0.012326</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-8.19412 -24.3478 8.79787 0 0 -1.23136</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-31.1088 -33.5871 9.93915 0 0 -0.228191</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>26.2624 -0.342955 4.37433 0 -0 0.498464</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-2.5322 32.3213 1.23564 0 0 -0.802813</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-21.282 31.2118 0.657312 0 -0 1.52241</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-3.17478 17.4094 2.22935 0 0 -0.280126</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>35.066 -26.4167 9.23482 0 -0 1.14778</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>4.73454 4.54476 4.03823 0 0 -0.907828</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>3.27199 29.1054 1.65561 0 0 -1.25738</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/13.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/13.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>22.1098 28.0545 2.34693 0 0 -1.40826</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/2.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/2.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-14.018 -6.16877 5.13847 0 -0 0.60312</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>1.0908 -34.6074 10.4069 0 -0 0.246913</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-0.458939 0.60562 4.88689 0 0 -0.611019</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>32.3493 15.0097 2.51419 0 -0 0.621243</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-11.6449 1.57269 4.01029 0 -0 0.371923</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/14.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/14.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>18.7677 -15.7376 6.93571 0 -0 0.525449</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-21.6618 -23.1613 7.05935 0 -0 1.03293</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/12.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/12.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>31.3749 33.4148 3.75454 0 -0 0.493611</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-30.3278 27.9049 1.12277 0 -0 1.17129</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-2.74137 -14.6779 7.61403 0 -0 0.231485</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/4.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>18.0187 10.7649 3.42247 0 0 -0.192916</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>11.913 18.5049 2.62722 0 -0 0.821463</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/18.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/18.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>13.5774 -4.05742 5.15911 0 -0 0.190863</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/19.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/19.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>16.619 24.201 2.38607 0 0 -1.02658</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-8.27435 -9.04453 6.31693 0 -0 1.40334</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>10.028 10.7688 3.2354 0 0 -0.560561</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-7.55773 -12.8809 7.2635 0 -0 1.22401</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/1.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-7.38134 -24.0556 8.80458 0 0 -1.55406</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/10.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-4.35234 1.51245 4.75072 0 -0 0.765303</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-30.819 -16.7672 5.79823 0 -0 0.972592</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-23.3419 15.1504 1.95096 0 0 -1.02584</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-0.474163 -4.59125 6.11633 0 0 -1.17366</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/9.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-23.1279 -19.1831 6.30802 0 -0 1.08104</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-23.4838 5.32879 2.88649 0 -0 0.828218</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-24.9937 -23.9764 6.97622 0 0 -0.178846</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/5.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-32.3327 22.5122 1.54038 0 0 -0.044382</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/7.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-18.292 22.412 1.31794 0 0 -0.649442</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/6.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>33.584 -16.7936 7.10208 0 -0 0.472541</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/18.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/18.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>16.0472 -21.4558 7.85292 0 0 -0.919214</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/8.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>11.6072 1.60968 4.41958 0 0 -0.107279</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/17.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-24.1427 27.6719 0.985822 0 -0 0.545255</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/3.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>11.4396 14.4944 3.02477 0 -0 0.066759</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/13.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/13.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>-33.6537 35.2997 0.643955 0 0 -1.34605</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/16.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>33.3686 -0.999154 4.15207 0 0 -0.445141</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/14.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/14.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <model name='my_mesh'>
+    <pose frame=''>15.9435 -12.103 6.43273 0 -0 1.34605</pose>
+    <static>1</static>
+    <link name='body'>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>model://trees/15.dae</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <bounce/>
+          <friction>
+            <torsional>
+              <ode/>
+            </torsional>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+    </link>
+  </model>
+  <state world_name='default'>
+    <sim_time>3 2000000</sim_time>
+    <real_time>10 262231291</real_time>
+    <wall_time>1548167518 673349531</wall_time>
+    <iterations>1501</iterations>
+    <model name='heightmap'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <scale>1 1 1</scale>
+      <link name='link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <velocity>0 0 0 0 -0 0</velocity>
+        <acceleration>0 0 0 0 -0 0</acceleration>
+        <wrench>0 0 0 0 -0 0</wrench>
+      </link>
+    </model>
+    <model name='my_mesh'>
+      <pose frame=''>29.3659 -0.74908 4.35534 0 0 -1.51882</pose>
+      <scale>1 1 1</scale>
+      <link name='body'>
+        <pose frame=''>29.3659 -0.74908 4.35534 0 0 -1.51882</pose>
+        <velocity>0 0 0 0 -0 0</velocity>
+        <acceleration>0 0 0 0 -0 0</acceleration>
+        <wrench>0 0 0 0 -0 0</wrench>
+      </link>
+    </model>
+    <light name='sun'>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+    </light>
+  </state>
+</world>
+</sdf>

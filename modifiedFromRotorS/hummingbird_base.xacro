@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+<!--
+  Copyright 2015 Fadri Furrer, ASL, ETH Zurich, Switzerland
+  Copyright 2015 Michael Burri, ASL, ETH Zurich, Switzerland
+  Copyright 2015 Mina Kamel, ASL, ETH Zurich, Switzerland
+  Copyright 2015 Janosch Nikolic, ASL, ETH Zurich, Switzerland
+  Copyright 2015 Markus Achtelik, ASL, ETH Zurich, Switzerland
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<robot name="hummingbird" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find rotors_description)/urdf/component_snippets.xacro" />
+  <xacro:include filename="$(find avoidance_benchmark)/src/my_sensors.xacro"/>
+  <!-- Instantiate hummingbird "mechanics" -->
+  <xacro:include filename="$(find avoidance_benchmark)/modifiedFromRotorS/hummingbird.xacro" />
+  <!-- Instantiate a controller. -->
+  <xacro:controller_plugin_macro namespace="${namespace}" imu_sub_topic="imu" />
+  
+  
+	<!-- END NEEDED BASE -->
+
+	 <!-- Add a collision detector for both the perfect and noisy cases -->
+	  <gazebo reference="${namespace}/base_link">
+		<sensor name="collision_sensor" type="contact">
+	   <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">   
+		    <bumperTopicName>bumper_vals</bumperTopicName>
+		    <frameName>world</frameName>
+		</plugin>
+		  <always_on>true</always_on>
+		  <update_rate>500</update_rate>
+		  <contact>
+			<collision>hummingbird/base_link_fixed_joint_lump__mav_collision_box_collision</collision>
+		  </contact>
+		</sensor>
+	  </gazebo>
+	
+	<!-- Add Wind Plugin -->
+    <gazebo>
+      <plugin filename="libroast_gazebo_wind_plugin.so" name="wind_plugin">
+        <frameId>world</frameId>
+        <linkName>${namespace}/base_link</linkName>
+        <robotNamespace>${namespace}</robotNamespace>
+        <xyzOffset>0 0 0</xyzOffset> <!-- [m] [m] [m] -->
+        <windDirection>1 0 0</windDirection>
+        <windForceMean>1</windForceMean> <!-- [N] -->
+        <windForceVariance>0.1</windForceVariance> <!-- [N] -->
+        <windGustDirection>0 1 0</windGustDirection>
+        <windGustDuration>5</windGustDuration> <!-- [s] -->
+        <windGustDurationCycle>20</windGustDurationCycle> <!-- [s] -->
+        <windGustForceMean>1</windGustForceMean> <!-- [N] -->
+        <windGustForceVariance>0.1</windGustForceVariance> <!-- [N] -->
+      </plugin>
+    </gazebo>
+	
+	<!-- Add perfect Odometry for the benchmark manager to compute precise metrics. It SHOULD NOT BE USED in the tested algorithms -->
+    <xacro:odometry_plugin_macro
+      namespace="${namespace}"
+      odometry_sensor_suffix="gt"
+      parent_link="${namespace}/base_link"
+      pose_topic="ground_truth/pose"
+      pose_with_covariance_topic="ground_truth/pose_with_covariance"
+      position_topic="ground_truth/position"
+      transform_topic="ground_truth/transform"
+      odometry_topic="ground_truth/odometry"
+      parent_frame_id="world"
+      child_frame_id="${namespace}/base_link"
+      mass_odometry_sensor="0.00001"
+      measurement_divisor="1"
+      measurement_delay="0"
+      unknown_delay="0.0"
+      noise_normal_position="0 0 0"
+      noise_normal_quaternion="0 0 0"
+      noise_normal_linear_velocity="0 0 0"
+      noise_normal_angular_velocity="0 0 0"
+      noise_uniform_position="0 0 0"
+      noise_uniform_quaternion="0 0 0"
+      noise_uniform_linear_velocity="0 0 0"
+      noise_uniform_angular_velocity="0 0 0"
+      enable_odometry_map="false"
+      odometry_map=""
+      image_scale="">
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:odometry_plugin_macro>
+	
+		<!-- PERFECT SENSORS -->
+	<xacro:if value="$(arg perfect_sensing)">
+  	    <!-- Perfect IMU -->
+		<xacro:imu_plugin_macro
+		  namespace="${namespace}"
+		  imu_suffix="gt"
+		  parent_link="${namespace}/base_link"
+		  imu_topic="imu"
+		  mass_imu_sensor="0.00001"
+		  gyroscope_noise_density="0.0"
+		  gyroscope_random_walk="0.0"
+		  gyroscope_bias_correlation_time="1000.0"
+		  gyroscope_turn_on_bias_sigma="0.0"
+		  accelerometer_noise_density="0.0"
+		  accelerometer_random_walk="0.0"
+		  accelerometer_bias_correlation_time="300.0"
+		  accelerometer_turn_on_bias_sigma="0.0">
+		  <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+		  <origin xyz="0 0 0" rpy="0 0 0" />
+		</xacro:imu_plugin_macro>
+  	    
+  	    <!-- Perfect GPS -->
+		<xacro:gps_plugin_macro
+		  namespace="${namespace}"
+		  gps_suffix=""
+		  parent_link="${namespace}/base_link"
+		  gps_topic="gps"
+		  ground_speed_topic="ground_speed"
+		  mass_gps_sensor="0.000001"
+		  horizontal_pos_std_dev="0.0"
+		  vertical_pos_std_dev="0.0"
+		  horizontal_vel_std_dev="0.0"
+		  vertical_vel_std_dev="0.0">
+		  <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+		  <origin xyz="0 0 0" rpy="0 0 0" />
+		</xacro:gps_plugin_macro>
+  	    
+  	    <!-- Perfect Magnetometer -->
+	  	<xacro:magnetometer_plugin_macro
+		  namespace="${namespace}"
+		  magnetometer_suffix=""
+		  parent_link="${namespace}/base_link"
+		  magnetometer_topic="magnetic_field"
+		  mass_magnetometer_sensor="0.000001"
+		  ref_mag_north="0.000021493"
+		  ref_mag_east="0.000000815"
+		  ref_mag_down="0.000042795"
+		  noise_normal="0.000000000 0.000000000 0.000000000"
+		  noise_uniform_initial_bias="0.000000000 0.000000000 0.000000000">
+		  <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+		  <origin xyz="0 0 0" rpy="0 0 0" />
+		</xacro:magnetometer_plugin_macro>
+		
+  	    <!-- Perfect Depth Image && Point Cloud -->
+  	    <xacro:vi_sensor_depth_macro namespace="${namespace}"
+  	    parent_link="${namespace}/base_link"
+  	    camera_suffix="depth"
+  	    frame_rate="30"
+  	    max_range="100">
+  	    <origin xyz="0.30 0 0.0" rpy="0 0 0" />
+  	    </xacro:vi_sensor_depth_macro>
+  	    
+
+</xacro:if>
+
+	<!-- REALISTIC NOISY SENSORS -->
+<xacro:unless value="$(arg perfect_sensing)">
+  	<!-- Mount an ADIS16448 IMU. -->
+  	<xacro:default_imu namespace="${namespace}" parent_link="${namespace}/base_link" />
+  	
+  	<!-- GPS -->
+    <xacro:gps_plugin_macro
+      namespace="${namespace}"
+      gps_suffix=""
+      parent_link="${namespace}/base_link"
+      gps_topic="gps"
+      ground_speed_topic="ground_speed"
+      mass_gps_sensor="0.015"
+      horizontal_pos_std_dev="0.05"
+      vertical_pos_std_dev="0.05"
+      horizontal_vel_std_dev="0.05"
+      vertical_vel_std_dev="0.05">
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:gps_plugin_macro>
+	
+	<!-- MAGNETOMETER -->
+	<xacro:default_magnetometer namespace="${namespace}" parent_link="${namespace}/base_link" />
+    
+  	<!-- RGBD Camera & Point Cloud TODO ADD NOISE -->
+ <xacro:macro name="roast_sensor_depth_macro"
+    params="namespace parent_link camera_suffix frame_rate max_range *origin">
+    <link name="${namespace}/camera_${camera_suffix}_link">
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="0.01" radius="0.007" />
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+    <joint name="${namespace}/camera_${camera_suffix}_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent_link}" />
+      <child link="${namespace}/camera_${camera_suffix}_link" />
+      <limit upper="0" lower="0" effort="0" velocity="0" />
+    </joint>
+    <!-- Optical center of camera -->
+    <link name="${namespace}/camera_${camera_suffix}_optical_center_link" />
+    <joint name="${namespace}/camera_${camera_suffix}_optical_center_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+      <parent link="${namespace}/camera_${camera_suffix}_link" />
+      <child link="${namespace}/camera_${camera_suffix}_optical_center_link" />
+      <limit upper="0" lower="0" effort="0" velocity="0" />
+    </joint>
+    <gazebo reference="${namespace}/camera_${camera_suffix}_link">
+      <sensor type="depth" name="${namespace}_camera_{camera_suffix}">
+        <always_on>true</always_on>
+        <update_rate>${frame_rate}</update_rate>
+        <camera>
+          <horizontal_fov>2</horizontal_fov>
+          <image>
+            <format>R8G8B8</format>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>${max_range}</far>
+          </clip>
+        </camera>
+        <plugin name="${namespace}_camera_{camera_suffix}" filename="libgazebo_ros_openni_kinect.so">
+          <robotNamespace>${namespace}</robotNamespace>
+          <alwaysOn>true</alwaysOn>
+          <baseline>0.11</baseline>
+          <updateRate>${frame_rate}</updateRate>
+          <cameraName>camera_${camera_suffix}</cameraName>
+          <imageTopicName>camera/image_raw</imageTopicName>
+          <cameraInfoTopicName>camera/camera_info</cameraInfoTopicName>
+          <depthImageTopicName>depth/disparity</depthImageTopicName>
+          <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+          <pointCloudTopicName>depth/points</pointCloudTopicName>
+          <frameName>camera_${camera_suffix}_optical_center_link</frameName>
+          <pointCloudCutoff>0.01</pointCloudCutoff>
+          <pointCloudCutoffMax>${max_range}</pointCloudCutoffMax>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+  	<xacro:roast_sensor_depth_macro 
+  		namespace="${namespace}"
+  		parent_link="${namespace}/base_link"
+  		camera_suffix="depth"
+  		frame_rate="30"
+  		max_range="100">
+  		<origin xyz="0.30 0 0.0" rpy="0 0 0" />
+  	</xacro:roast_sensor_depth_macro>
+</xacro:unless>
+
+  	    <!-- Cameras -->
+  	      <xacro:camera_macro namespace="${namespace}" 
+  	      parent_link="${namespace}/base_link" 
+  	      camera_suffix="looking_ahead" 
+  	      frame_rate="30"
+  	      horizontal_fov="1.39"
+  	      image_width="1024"
+  	      image_height="768"
+  	      image_format="R8G8B8" 
+  	      min_distance="0.1"
+ 	      max_distance="100" 
+ 	      noise_mean="0.0" 
+ 	      noise_stddev="0.0" 
+ 	      enable_visual="true">
+ 	      <box size="0.001 0.001 0.001" /> 
+          <origin xyz="0.30 0 0.0" rpy="0 0 0" />
+          </xacro:camera_macro>
+          <xacro:camera_macro namespace="${namespace}" 
+  	      parent_link="${namespace}/base_link" 
+  	      camera_suffix="looking_downwards" 
+  	      frame_rate="30"
+  	      horizontal_fov="1.39"
+  	      image_width="1024"
+  	      image_height="768"
+  	      image_format="R8G8B8" 
+  	      min_distance="0.1"
+ 	      max_distance="100" 
+ 	      noise_mean="0" 
+ 	      noise_stddev="0.0" 
+ 	      enable_visual="true">
+ 	      <box size="0.001 0.001 0.001" /> 
+          <origin xyz="0. 0. -0.05" rpy="0 1.5707 0" />
+          </xacro:camera_macro>          
+</robot>

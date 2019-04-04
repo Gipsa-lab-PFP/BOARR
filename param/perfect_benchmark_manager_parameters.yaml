@@ -1,0 +1,21 @@
+# Defining constants for all the perfect tests. All parameters that change depending on the script are defined through the launch files.
+perfectTest: true
+
+# Defining the beginning of the test
+# There is the possibility to define a hover before the first goal is sent to the avoidance stack, the hover will be a 2m above the spawn point with a null yaw.
+initialHovering: {status: true, duration: 2.} # A duration <= 0 will trigger a getchar to stop the initial hovering, 
+                                              # A duration > 0 will start a timer (in s), and the Hovering will last for the specific asked time. 
+finalLending: true
+
+# Defining a test Max Length
+testMaxTime: 85.0 # in s, Allow a 1m/s algorithm to complete the test. 
+
+# Outputs
+saveSummary: true
+videoFreq: 20.0
+
+# Goals
+goals:
+  '1': {x: 30.0, y: 22. , z: 5., minDistToValidate: 1.}
+  '2': {x: 30.0, y: -22., z: 5., minDistToValidate: 1.}  
+  '3': {x:  0.0, y: 0.0 , z: 5,  minDistToValidate: 1.}

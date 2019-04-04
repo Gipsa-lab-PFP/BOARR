@@ -1,0 +1,4 @@
+# Defining all algorithm related parameters.
+
+# controlType : 0 -> position, 1 -> Angle, 2 -> Motor Speed
+controlType: 0

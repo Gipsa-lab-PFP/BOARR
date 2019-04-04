@@ -1,0 +1,20 @@
+According to the Apache2.0 license that RotorS uses, changes must be specified. 
+
+The only changed file from the RotorS project are available in this directory. 
+
+This is the list of changes :
+	hummingbird.xacro  
+		- internal RotorS link replaced to BOARR link.
+		
+	hummingbird_base.xacro :
+		- added a link to new sensors.
+		- swapped an internal RotorS link to a BOARR link
+		- added sensors in the hummingbird frame
+		
+	multirotor_base.xacro :
+		- collision box of the UAV changed into a single cylinder
+	
+	spawn.mav (not under Apache2.0 license) :
+		- swapped an internal RotorS link to a BOARR link
+		- added a launch parameter
+		

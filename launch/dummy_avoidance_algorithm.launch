@@ -1,0 +1,11 @@
+<!-- launch : the dummy avoidance algorithm + a controller from rotors  -->  
+<launch>
+    <arg name="mav_name" default="hummingbird"/>
+
+        <node pkg="avoidance_benchmark" type="dummy_avoidance_algorithm" name="avoidance_algorithm" output="screen">
+            <remap from="odometry" to="$(arg mav_name)/ground_truth/odometry"/>
+            <remap from="command/output_trajectory" to="$(arg mav_name)/command/trajectory"/>
+            <remap from="command/global_goal" to="$(arg mav_name)/command/global_goal"/>
+        </node>
+        
+</launch>

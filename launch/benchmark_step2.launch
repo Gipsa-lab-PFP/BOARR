@@ -1,0 +1,32 @@
+<!-- launch : the test manager if wanted  -->  
+<launch>
+    <arg name="mav_name" default="hummingbird"/>
+    <arg name="world_name" default="worlds/forestO"/>
+    <arg name="savingPrefix" default="benchmark_results"/>
+    <arg name="saveImage" default="false"/>
+    <arg name="imageName" default="default_image.jpg" />
+    <arg name="saveVideo" default="false"/>
+    <arg name="videoName" default="default_video.avi"/>
+    <arg name="summaryName" default="default_summary"/>
+    <arg name="showLiveImage" default="false"/>
+    
+    <node pkg="avoidance_benchmark" type="benchmark_manager" name="benchmark_manager" output="screen">
+        <rosparam command="load" file="$(find avoidance_benchmark)/param/benchmark_manager_parameters.yaml"/>
+        <rosparam command="load" file="$(find avoidance_benchmark)/param/custom_parameters.yaml"/>
+        <rosparam command="load" file="$(find avoidance_benchmark)/gazebo/$(arg world_name).yaml"/>
+        <remap from="odometry" to="$(arg mav_name)/ground_truth/odometry"/>
+        <remap from="command/output_trajectory" to="$(arg mav_name)/command/trajectory"/>
+        <remap from="command/global_goal" to="$(arg mav_name)/command/global_goal"/>
+        <remap from="command/global_goal_gazebo_ref" to="$(arg mav_name)/command/global_goal_gazebo_ref"/>
+        <remap from="raw_camera" to="$(arg mav_name)/camera_looking_ahead/image_raw"/>
+        <remap from="motor_speed" to="$(arg mav_name)/motor_speed"/>
+        <remap from="bumper_vals" to="$(arg mav_name)/bumper_vals"/>
+        <param name="saveImage" value="$(arg saveImage)"/>            
+        <param name="imageName" value="$(arg savingPrefix)/$(arg imageName)"/>
+        <param name="saveVideo" value="$(arg saveVideo)"/>            
+        <param name="videoName" value="$(arg savingPrefix)/$(arg videoName)"/>
+        <param name="summaryName" value="$(arg savingPrefix)/$(arg summaryName)"/>
+        <param name="showLiveImage" value="$(arg showLiveImage)"/>
+        <param name="mavName" value="$(arg mav_name)"/>
+    </node>
+</launch>
