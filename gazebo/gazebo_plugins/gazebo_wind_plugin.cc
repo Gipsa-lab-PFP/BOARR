@@ -26,11 +26,11 @@
 
 namespace gazebo {
 
-ROASTGazeboWindPlugin::~ROASTGazeboWindPlugin() {
+BOARRGazeboWindPlugin::~BOARRGazeboWindPlugin() {
   event::Events::DisconnectWorldUpdateBegin(update_connection_);
 }
 
-void ROASTGazeboWindPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
+void BOARRGazeboWindPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   if (kPrintOnPluginLoad) {
     gzdbg << __FUNCTION__ << "() called." << std::endl;
   }
@@ -95,10 +95,10 @@ void ROASTGazeboWindPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
   update_connection_ = event::Events::ConnectWorldUpdateBegin(
-      boost::bind(&ROASTGazeboWindPlugin::OnUpdate, this, _1));
+      boost::bind(&BOARRGazeboWindPlugin::OnUpdate, this, _1));
 }
 
-double ROASTGazeboWindPlugin::RandNormal(double mean, double stddev)//Box muller method
+double BOARRGazeboWindPlugin::RandNormal(double mean, double stddev)//Box muller method
 {
   static double n2 = 0.0;
   static int n2_cached = 0;
@@ -130,7 +130,7 @@ double ROASTGazeboWindPlugin::RandNormal(double mean, double stddev)//Box muller
 }
 
 // This gets called by the world update start event.
-void ROASTGazeboWindPlugin::OnUpdate(const common::UpdateInfo& _info) {
+void BOARRGazeboWindPlugin::OnUpdate(const common::UpdateInfo& _info) {
   if (kPrintOnUpdates) {
     gzdbg << __FUNCTION__ << "() called." << std::endl;
   }
@@ -155,5 +155,5 @@ void ROASTGazeboWindPlugin::OnUpdate(const common::UpdateInfo& _info) {
 }
 
 // register the plugin
-GZ_REGISTER_MODEL_PLUGIN(ROASTGazeboWindPlugin)
+GZ_REGISTER_MODEL_PLUGIN(BOARRGazeboWindPlugin)
 } // namespace gazebo

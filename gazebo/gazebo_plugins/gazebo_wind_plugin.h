@@ -19,8 +19,8 @@
  */
 
 
-#ifndef ROAST_GAZEBO_PLUGINS_GAZEBO_WIND_PLUGIN_H
-#define ROAST_GAZEBO_PLUGINS_GAZEBO_WIND_PLUGIN_H
+#ifndef BOARR_GAZEBO_PLUGINS_GAZEBO_WIND_PLUGIN_H
+#define BOARR_GAZEBO_PLUGINS_GAZEBO_WIND_PLUGIN_H
 
 #include <string>
 
@@ -53,9 +53,9 @@ static const math::Vector3 kDefaultWindGustDirection = math::Vector3(0, 1, 0);
 /// \brief    This gazebo plugin simulates wind acting on a model.
 /// \details  This plugin publishes on a Gazebo topic and instructs the ROS interface plugin to
 ///           forward the message onto ROS.
-class ROASTGazeboWindPlugin : public ModelPlugin {
+class BOARRGazeboWindPlugin : public ModelPlugin {
  public:
-  ROASTGazeboWindPlugin()
+  BOARRGazeboWindPlugin()
       : ModelPlugin(),
         namespace_(kDefaultNamespace),
         wind_force_mean_(kDefaultWindForceMean),
@@ -67,7 +67,7 @@ class ROASTGazeboWindPlugin : public ModelPlugin {
         link_name_(kDefaultLinkName),
         node_handle_(nullptr) {}
 
-  virtual ~ROASTGazeboWindPlugin();
+  virtual ~BOARRGazeboWindPlugin();
 
  protected:
 
@@ -109,4 +109,4 @@ class ROASTGazeboWindPlugin : public ModelPlugin {
 };
 }
 
-#endif // ROAST_GAZEBO_PLUGINS_GAZEBO_WIND_PLUGIN_H
+#endif // BOARR_GAZEBO_PLUGINS_GAZEBO_WIND_PLUGIN_H
