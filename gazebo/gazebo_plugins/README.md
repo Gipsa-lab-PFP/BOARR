@@ -18,7 +18,7 @@ and finally :
 
 It will generate worlds in ../worlds using the models in ../models and therefore needs both those dierctories. 
 
-If you feel this plugin been useful and want to give credit, please cite the ROAST benchmark paper.
+If you feel this plugin helpful and want to give credit for it, please cite the BOARR benchmark paper in which the forest generation is described.
 
 ### What it does in detail
 This plugin generates forests by spawning trees in a heightmap. 
