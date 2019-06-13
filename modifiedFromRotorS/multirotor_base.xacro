@@ -69,7 +69,7 @@
       <collision name="mav_collision_box">
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-		  <cylinder length="0.075" radius="0.272"/>
+		  <cylinder length="0.12" radius="0.285"/>
         </geometry>
       </collision>
     </link>
