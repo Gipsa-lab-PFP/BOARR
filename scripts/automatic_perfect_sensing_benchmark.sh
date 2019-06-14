@@ -47,7 +47,7 @@ for ((i=1; i<=5; i++))
         fi
         sleep 2s
         echo "launching the benchmark manager"
-        timeout 123s roslaunch avoidance_benchmark perfect_benchmark_step2.launch savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true > /dev/null 2>&1 & 
+        timeout 123s roslaunch avoidance_benchmark perfect_benchmark_step2.launch stopOnCollision:=true savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true > /dev/null 2>&1 & 
         Proc2=$!
         sleep 2s
         echo "Waiting for the completion of the test" 
@@ -70,10 +70,25 @@ for ((i=1; i<=5; i++))
         fi
         kill $Proc1
         wait $Proc1
-        echo -e "everything have been killed, Waiting 5s before restarting the next loop \n" 
+        echo "Everything has been killed."
+        # checking that the test manager has correctly output something in the text file. 
+        linenumber=$(cat ~/.ros/benchmark_results/$dirname/default_summary | wc -l)
+        # if it did
+        echo $linenumber 
+        echo $((i+1))
+        if (( $linenumber == $((i+1)) )); then
+            echo -e "Waiting 5s before starting the next loop \n" 
+            # if it did not: 
+        else 
+            i=$((i-1))
+            echo -e "An ERROR ocurred, waiting 5s before restarting the SAME loop \n" 
+        fi
         sleep 5s
     done
+    
 echo "End of the Tests, RESULTS : "
-cp ~/.ros/benchmark_results/$dirname/default_summary ../results/$dirname
-python3 statisticalAnalysis.py ../results/$dirname
+mkdir ../results/generated_files > /dev/null 2>&1 
+mkdir ../results/generated_files/$dirname
+cp ~/.ros/benchmark_results/$dirname/default_summary ../results/generated_files/$dirname
+python3 statisticalAnalysis.py ../results/$dirname/default_summary
 echo "End of Avoidance Benchmark Script"

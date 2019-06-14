@@ -70,3 +70,6 @@ kill $Proc1
 wait $Proc1
 echo "Everything have been killed"
 echo "End of Avoidance Benchmark Script"
+mkdir ../results/generated_files > /dev/null 2>&1 
+mkdir ../results/generated_files/$dirname
+cp ~/.ros/benchmark_results/$dirname/* ../results/generated_files/$dirname/

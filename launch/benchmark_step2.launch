@@ -9,6 +9,7 @@
     <arg name="videoName" default="default_video.avi"/>
     <arg name="summaryName" default="default_summary"/>
     <arg name="showLiveImage" default="false"/>
+    <arg name="stopOnCollision" default="false"/>
     
     <node pkg="avoidance_benchmark" type="benchmark_manager" name="benchmark_manager" output="screen">
         <rosparam command="load" file="$(find avoidance_benchmark)/param/benchmark_manager_parameters.yaml"/>
@@ -28,5 +29,6 @@
         <param name="summaryName" value="$(arg savingPrefix)/$(arg summaryName)"/>
         <param name="showLiveImage" value="$(arg showLiveImage)"/>
         <param name="mavName" value="$(arg mav_name)"/>
+        <param name="stopOnCollision" value="$(arg stopOnCollision)"/>
     </node>
 </launch>

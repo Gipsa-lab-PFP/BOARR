@@ -8,11 +8,12 @@
     <arg name="videoName" default="default_video.avi"/>
     <arg name="summaryName" default="default_summary"/>
     <arg name="showLiveImage" default="false"/>
+    <arg name="stopOnCollision" default="false"/>
 
     <node pkg="avoidance_benchmark" type="benchmark_manager" name="benchmark_manager" output="screen">
         <rosparam command="load" file="$(find avoidance_benchmark)/param/perfect_benchmark_manager_parameters.yaml"/>
         <rosparam command="load" file="$(find avoidance_benchmark)/param/custom_parameters.yaml"/>
-        <remap from="odometry" to="$(arg mav_name)/ground_truth/odometry"/>
+        <remap from="command/input_trajectory" to="$(arg mav_name)/command/trajectory"/>
         <remap from="command/output_trajectory" to="$(arg mav_name)/command/trajectory"/>
         <remap from="command/global_goal" to="$(arg mav_name)/command/global_goal"/>
         <remap from="command/global_goal_gazebo_ref" to="$(arg mav_name)/command/global_goal_gazebo_ref"/>
@@ -26,5 +27,6 @@
         <param name="summaryName" value="$(arg savingPrefix)/$(arg summaryName)"/>
         <param name="showLiveImage" value="$(arg showLiveImage)"/>
         <param name="mavName" value="$(arg mav_name)"/>
+        <param name="stopOnCollision" value="$(arg stopOnCollision)"/>
     </node>
 </launch>

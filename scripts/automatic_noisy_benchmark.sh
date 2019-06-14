@@ -42,7 +42,7 @@ for ((i=0; i<worldNumber; i++))
         export spawnZ
         
         echo -e "Starting the World and the RotorS simulator for the $((i+1)) time"  
-        timeout 175s roslaunch avoidance_benchmark benchmark_step1.launch world_name:=benchmark_v1.0_worlds/forest$i & #> /dev/null 2>&1 & 
+        timeout 1000s roslaunch avoidance_benchmark benchmark_step1.launch world_name:=benchmark_v1.0_worlds/forest$i & > /dev/null 2>&1 & 
         Proc1=$!
         sleep 5s
         if  (( $launchExecNumber > 0 )); then
@@ -50,7 +50,7 @@ for ((i=0; i<worldNumber; i++))
             for((j=0; j<launchExecNumber; j++))
                 do
                     tmp=P$j
-                    timeout 170s roslaunch avoidance_benchmark $j.launch > /dev/null 2>&1 &
+                    timeout 1000s roslaunch avoidance_benchmark $j.launch > /dev/null 2>&1 &
                     eval $tmp=$!
                     sleep 2s
                 done
@@ -59,14 +59,13 @@ for ((i=0; i<worldNumber; i++))
             for((j=0; j<execNumber; j++))
             do
                     tmp=P$j
-                    timeout 170s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
+                    timeout 1000s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
                     eval $tmp=$!
                     sleep 2s
                 done
         fi
         echo "Launching the benchmark manager"
-        timeout 30s roslaunch avoidance_benchmark benchmark_step2.launch world_name:=benchmark_v1.0_worlds/forest$i savingPrefix:=benchmark_results/$dirname/ & # > /dev/null 2>&1 &
-        #timeout 168s roslaunch avoidance_benchmark benchmark_step2.launch world_name:=benchmark_v1.0_worlds/forest$i savingPrefix:=benchmark_results/$dirname/ > /dev/null 2>&1 &
+        timeout 1000s roslaunch avoidance_benchmark benchmark_step2.launch stopOnCollision:=true world_name:=benchmark_v1.0_worlds/forest$i savingPrefix:=benchmark_results/$dirname/ &
         Proc2=$!
         sleep 2s
         echo "Waiting for the completion of the test" 
@@ -97,15 +96,17 @@ for ((i=0; i<worldNumber; i++))
         echo $linenumber 
         echo $((i+1))
         if (( $linenumber == $((i+1)) )); then
-            echo -e "Waiting 5s before starting the next loop \n" 
+            echo -e "Waiting 15s before starting the next loop \n" 
             # if it did not: 
         else 
             i=$((i-1))
-            echo -e "An ERROR ocurred, waiting 5s before restarting the SAME loop \n" 
+            echo -e "An ERROR ocurred, waiting 15s before restarting the SAME loop \n" 
         fi
         sleep 15s
     done
 echo "End of the Tests, RESULTS : "
-cp ~/.ros/benchmark_results/$dirname/default_summary ../results/$dirname
-python3 statisticalAnalysis.py ../results/$dirname
+mkdir ../results/generated_files > /dev/null 2>&1 
+mkdir ../results/generated_files/$dirname
+cp ~/.ros/benchmark_results/$dirname/default_summary ../results/generated_files/$dirname
+python3 statisticalAnalysis.py ../results/generated_files/$dirname/default_summary
 echo "End of Avoidance Benchmark Script"
