@@ -122,6 +122,7 @@ void Test::initParam()
     _initialHoverYaw = nh_private_.param<double>("initialHovering/yaw", 0.0);
     _initialHoverDuration = nh_private_.param<double>("initialHovering/duration", 6.0); 
 
+    _stopOnCollision = nh_private_.param<bool>("stopOnCollision",false);
     _finalLending = nh_private_.param<bool>("finalLending", true);
 
     _perfectTest = nh_private_.param<bool>("perfectTest",true);
@@ -362,6 +363,12 @@ void Test::collisionCallback(const gazebo_msgs::ContactsState::ConstPtr& msg)
         initialCollisionTime = ros::Time::now();
         _collisionNumber ++;
     }
+
+    if ( _stopOnCollision )
+    {
+    	std::cout << "Benchmark Manager: Collision Detected, End of the test" << std::endl;
+    	_stop = true;
+    }
 }
 
 void Test::timerCallback(const ros::TimerEvent& timer)
@@ -375,11 +382,11 @@ void Test::timerCallback(const ros::TimerEvent& timer)
     float loop_total_time =  ros::Time::now().toSec() - testBeginTime.toSec() ;
     if ( fmod(loop_total_time, 5.0) < 0.051 )
     {
-        std::cout << "Benchmark Manager: the test started : " << loop_total_time << "s ago, max time : " <<  _testMaxTime << "s" << std::endl;
+        std::cout << "Benchmark Manager: The test started : " << loop_total_time << "s ago, max time : " <<  _testMaxTime << "s" << std::endl;
     }
     if ( loop_total_time > _testMaxTime )
     {
-        std::cout << "Benchmark Manager: test manager and film creator stopped because the test length exceedeed the max length defined " << std::endl; 
+        std::cout << "Benchmark Manager: Test manager and film creator stopped because the test length exceedeed the max length defined " << std::endl; 
         testEndTime = ros::Time::now();
         _stop = true;
     }

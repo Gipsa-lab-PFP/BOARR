@@ -59,7 +59,7 @@ class Test
         Cart _initialHoverPos;
         double _initialHoverDuration, _initialHoverYaw;
         double _currentGoalNumber;
-        double _testMaxTime, _finalLending;
+        double _testMaxTime, _finalLending, _stopOnCollision;
         double testTime;
         int _controlType;
         bool _stop, _correctInitialization;
