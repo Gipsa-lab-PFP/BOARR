@@ -468,9 +468,9 @@ void Test::finalize()
         //save the summary 
         double test_time = testEndTime.toSec() - testBeginTime.toSec();
         int completion = 0;
-        if ( test_time <= _testMaxTime ) completion = 1; // there are only 3 ways to stop and to write a line in the code : 
-                                                              // test time reached maxtime => completion = 0,reached last goal => completion = 1, linearDist > 1000 => completion = 1 
-        _outputSummaryFile << completion << " " << _collisions.size() << " " << travelledDistance << " " << test_time << " " << consumedEnergy << " " << linearDist << std::endl; 
+        if ( test_time <= _testMaxTime && _collisions.size() == 0 ) completion = 1; // there are only 4 ways to stop and to write a line in the code :
+                                                              // test time reached maxtime or collision => completion = 0, reached last goal or linearDist > 1000 => completion = 1
+        _outputSummaryFile << completion << " " << _collisions.size() << " " << travelledDistance << " " << test_time << " " << consumedEnergy << " " << linearDist << std::endl;
     }
 }
 
