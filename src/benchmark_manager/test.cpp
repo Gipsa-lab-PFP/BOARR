@@ -52,10 +52,10 @@ Test::Test() :
     _timer = _nh.createTimer(ros::Duration(1./_videoFreq), &Test::timerCallback, this );
 
     // Odometry Callback and main callback, send new goal when a goal is reached, update most of the benchmark performance criteria 
-    _odomSub = _nh.subscribe("odometry", 1000000, &Test::odomCallback, this );
+    _odomSub = _nh.subscribe("odometry", 1, &Test::odomCallback, this );
 
     // Motor Callback, to compute the Energy Used during the flight
-    _motorSub = _nh.subscribe("motor_speed", 10000, &Test::motorCallback, this );
+    _motorSub = _nh.subscribe("motor_speed", 1, &Test::motorCallback, this );
 
     // Collision Callback
     _collisionSub = _nh.subscribe("bumper_vals", 100000, &Test::collisionCallback, this );
@@ -316,7 +316,11 @@ void Test::odomCallback(const nav_msgs::Odometry::ConstPtr& msg)
     Point_3D proj(CART, projX, projY, projZ);
     double linearDistTmp = distBetweenPastWaypoints + projX+projY+projZ;;
     if (linearDist < linearDistTmp) linearDist = linearDistTmp;
-    if (linearDist > 1000) _stop = true; //if we sucessfully fly for more than 1km, then stop and validate ! 
+    if (linearDist > 1000) //if we sucessfully fly for more than 1km, then stop and validate ! 
+	{
+		testEndTime = ros::Time::now();
+        _stop = true;
+	}
 
     // Current Test time
     testTime = ros::Time::now().toSec() - testBeginTime.toSec();
@@ -362,12 +366,11 @@ void Test::collisionCallback(const gazebo_msgs::ContactsState::ConstPtr& msg)
         this->_collisions.push_back( Cart( msg->states.at(0).contact_positions.at(0).x,msg->states.at(0).contact_positions.at(0).y,msg->states.at(0).contact_positions.at(0).z));
         initialCollisionTime = ros::Time::now();
         _collisionNumber ++;
-    }
-
-    if ( _stopOnCollision )
-    {
-    	std::cout << "Benchmark Manager: Collision Detected, End of the test" << std::endl;
-    	_stop = true;
+        if ( _stopOnCollision )
+    	{
+    		std::cout << "Benchmark Manager: Collision Detected, End of the test" << std::endl;
+    		_stop = true;
+    	}
     }
 }
 
@@ -437,6 +440,11 @@ bool Test::stop()
 
 void Test::finalize()
 {
+	if ( !_correctInitialization ) 
+	{
+	    std::cout << "Benchmark Manager : Failed initialization, most probably either RotorS or Gazebo crashed. Stopping the manager." << std::endl; 
+		return;
+	}
     if ( _finalLending ) 
     {
         // switching back to a control in position 
