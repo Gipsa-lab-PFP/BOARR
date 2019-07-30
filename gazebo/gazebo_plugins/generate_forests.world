@@ -47,6 +47,6 @@
 	<!-- World Creation Plugin -->
 	<!-- Create a forest by randomly chosing an heigthmap and randomly spawning trees on this heigthmap  -->
 	<!-- the ./build directory neds to be added to the gazebo_plugin_path for this plugin to be found -->
-    <plugin name="world_creation" filename="libworld_creation.so"/>
+    <plugin name="world_creation" filename="libgazebo_world_creation_plugin.so"/>
   </world>
 </sdf>
