@@ -1,4 +1,4 @@
-# This script has two purposes : 
+# This script has two purposes (it must be run after generating new forests): 
 # - delete the world_creation_plugin from the world
 # - insert the ros_interface_plugin that is needed in rotorS
 
