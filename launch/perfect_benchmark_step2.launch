@@ -13,6 +13,7 @@
     <node pkg="avoidance_benchmark" type="benchmark_manager" name="benchmark_manager" output="screen">
         <rosparam command="load" file="$(find avoidance_benchmark)/param/perfect_benchmark_manager_parameters.yaml"/>
         <rosparam command="load" file="$(find avoidance_benchmark)/param/custom_parameters.yaml"/>
+        <remap from="odometry" to="$(arg mav_name)/ground_truth/odometry"/>
         <remap from="command/input_trajectory" to="$(arg mav_name)/command/trajectory"/>
         <remap from="command/output_trajectory" to="$(arg mav_name)/command/trajectory"/>
         <remap from="command/global_goal" to="$(arg mav_name)/command/global_goal"/>

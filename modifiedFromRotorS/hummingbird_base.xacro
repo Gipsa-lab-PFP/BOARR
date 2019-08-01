@@ -217,12 +217,12 @@
 		    <xyzOffset>0 0 0</xyzOffset> <!-- [m] [m] [m] -->
 		    <windDirection>1 0 0</windDirection>
 		    <windForceMean>1</windForceMean> <!-- [N] -->
-		    <windForceVariance>0.1</windForceVariance> <!-- [N] -->
+		    <windForceVariance>0.5</windForceVariance> <!-- [N] -->
 		    <windGustDirection>0 1 0</windGustDirection>
 		    <windGustDuration>5</windGustDuration> <!-- [s] -->
 		    <windGustDurationCycle>20</windGustDurationCycle> <!-- [s] -->
 		    <windGustForceMean>1</windGustForceMean> <!-- [N] -->
-		    <windGustForceVariance>0.1</windGustForceVariance> <!-- [N] -->
+		    <windGustForceVariance>0.5</windGustForceVariance> <!-- [N] -->
 		  </plugin>
 		</gazebo>
 

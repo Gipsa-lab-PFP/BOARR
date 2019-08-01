@@ -22,10 +22,10 @@ mkdir ~/.ros/benchmark_results > /dev/null 2>&1
 dirname=`date +%Y_%m_%d-%Hh%Mm%Ss`
 mkdir ~/.ros/benchmark_results/$dirname 
 
-for ((i=1; i<=5; i++))
+for ((i=1; i<=1060; i++))
     do
         echo "Starting the World and the RotorS simulator for the $i time"  
-        timeout 130s roslaunch avoidance_benchmark perfect_benchmark_step1.launch world_name:=2D_100 > /dev/null 2>&1 & 
+        timeout 150s roslaunch avoidance_benchmark perfect_benchmark_step1.launch world_name:=2D_100 > /dev/null 2>&1 & 
         Proc1=$!
         sleep 5s
         if  (( $launchExecNumber > 0 )); then
@@ -33,7 +33,7 @@ for ((i=1; i<=5; i++))
             for((j=0; j<launchExecNumber; j++))
                 do
                     tmp=P$j
-                    timeout 125s roslaunch avoidance_benchmark $j.launch > /dev/null 2>&1 &
+                    timeout 145s roslaunch avoidance_benchmark $j.launch > /dev/null 2>&1 &
                     eval $tmp=$!
                 done
         else
@@ -41,13 +41,13 @@ for ((i=1; i<=5; i++))
             for((j=0; j<execNumber; j++))
             do
                     tmp=P$j
-                    timeout 125s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
+                    timeout 145s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
                     eval $tmp=$!
                 done
         fi
-        sleep 2s
+        sleep 4s
         echo "launching the benchmark manager"
-        timeout 123s roslaunch avoidance_benchmark perfect_benchmark_step2.launch stopOnCollision:=true savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true > /dev/null 2>&1 & 
+        timeout 140s roslaunch avoidance_benchmark perfect_benchmark_step2.launch stopOnCollision:=true savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true > /dev/null 2>&1 & 
         Proc2=$!
         sleep 2s
         echo "Waiting for the completion of the test" 
@@ -83,7 +83,7 @@ for ((i=1; i<=5; i++))
             i=$((i-1))
             echo -e "An ERROR ocurred, waiting 5s before restarting the SAME loop \n" 
         fi
-        sleep 5s
+        sleep 10s
     done
     
 echo "End of the Tests, RESULTS : "

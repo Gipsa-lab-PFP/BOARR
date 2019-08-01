@@ -369,6 +369,7 @@ void Test::collisionCallback(const gazebo_msgs::ContactsState::ConstPtr& msg)
         if ( _stopOnCollision )
     	{
     		std::cout << "Benchmark Manager: Collision Detected, End of the test" << std::endl;
+    		testEndTime = ros::Time::now();
     		_stop = true;
     	}
     }
@@ -476,8 +477,9 @@ void Test::finalize()
         //save the summary 
         double test_time = testEndTime.toSec() - testBeginTime.toSec();
         int completion = 0;
-        if ( test_time <= _testMaxTime && _collisions.size() == 0 ) completion = 1; // there are only 4 ways to stop and to write a line in the code :
-                                                              // test time reached maxtime or collision => completion = 0, reached last goal or linearDist > 1000 => completion = 1
+		if ( test_time <= _testMaxTime && _collisions.size() == 0 ) completion = 1; // there are only 3 ways to stop and to write a line in the code : 
+						          // test time reached maxtime || collision => completion = 0,reached last goal || linearDist > 1000 => completion = 1 
+
         _outputSummaryFile << completion << " " << _collisions.size() << " " << travelledDistance << " " << test_time << " " << consumedEnergy << " " << linearDist << std::endl;
     }
 }

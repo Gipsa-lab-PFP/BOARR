@@ -18,7 +18,8 @@ with open(sys.argv[1]) as textFile:
     # compute the sucess rate simultaneously
     # and compute the average flying speed
     data_success = [[] for _ in range(len(data_ligne[0])+1)]
-    data_failed = []
+    data_failed_with_collision = []
+    data_failed_out_of_time = []
     sucessNumber = 0;
     for i in range(len(data_ligne)):
         sucessNumber += float(data_ligne[i][0])
@@ -26,20 +27,39 @@ with open(sys.argv[1]) as textFile:
             for j in range(len(data_ligne[i])):
                 data_success[j].append(float(data_ligne[i][j]))
             data_success[len(data_ligne[i])].append(data_success[2][len(data_success[2])-1]/data_success[3][len(data_success[3])-1])
-        if float(data_ligne[i][0]) == 0:
-                data_failed.append(float(data_ligne[i][len(data_ligne[i])-1]))
-    
+        if float(data_ligne[i][0]) == 0 and float(data_ligne[i][1]) != 0:
+            data_failed_with_collision.append(float(data_ligne[i][len(data_ligne[i])-1]))
+        if float(data_ligne[i][0]) == 0 and float(data_ligne[i][1]) == 0:
+            data_failed_out_of_time.append(float(data_ligne[i][len(data_ligne[i])-1]))
+
+    # start computing the indicators :
+    means = [0.0] * 9
+    if len(data_failed_with_collision) > 0:    
+        means[7] = sum(data_failed_with_collision)/float(len(data_failed_with_collision))
+        data_failed_with_collision.sort()
+        idFailedFirstDecile = int(len(data_failed_with_collision) / 10 )
+        idFailedLastDecile = int(len(data_failed_with_collision) * 9 / 10)
+    if len(data_failed_out_of_time) > 0:    
+        means[8] = sum(data_failed_out_of_time)/float(len(data_failed_out_of_time))
+        data_failed_out_of_time.sort()
+        idFailedByTimeFirstDecile = int(len(data_failed_out_of_time) / 10 )
+        idFailedByTimeLastDecile = int(len(data_failed_out_of_time) * 9 / 10)
+
+    # escape if there are no successfull flights
     if sucessNumber == 0:
         print("ONLY UNSUCESSFULL FLIGHTS OCCURED.")
-        print("The secondary indicators canno't be computed in this case.")
+        print("Number of tests %i, number of tests will collisions %i, number of tests unfinished due to time %i" %(len(data_ligne), len(data_failed_with_collision),len(data_failed_out_of_time)))
+        print("Secondary Indicators Format : 'Name : Mean [First Decile, Ninth Decile]'")
+        if len(data_failed_with_collision) > 0:    
+            print("Average Linear Distance before collision on failed Tests with collision (m) : %.2f [%.2f, %.2f]" %(means[7], data_failed_with_collision[idFailedFirstDecile], data_failed_with_collision[idFailedLastDecile]))
+        if len(data_failed_out_of_time) > 0:    
+            print("Average Linear Distance before end of test on out of time Tests (m) : %.2f [%.2f, %.2f]" %(means[8], data_failed_out_of_time[idFailedByTimeFirstDecile], data_failed_out_of_time[idFailedByTimeLastDecile]))
         sys.exit("")
 
-    # compute and store the mean of all indicators
-    means = [0.0] * 8
+    # keep computing and store the mean of all indicators
     means[0] = sucessNumber/float(len(data_ligne))
     for i in range(1, 7):
         means[i] = sum(data_success[i])/float(len(data_success[i]))
-    means[7] = sum(data_failed)/float(len(data_failed))
         
     # compute the 99% confidance interval on the collision probability (see chernoff bound) 
     estError = math.sqrt(math.log1p(2/0.01)/(2*len(data_ligne)))
@@ -52,16 +72,15 @@ with open(sys.argv[1]) as textFile:
     idFirstDecile = int(len(data_success[0]) / 10 )
     idLastDecile = int(len(data_success[0]) * 9 / 10)
 
-    data_failed.sort()
-    idFailedFirstDecile = int(len(data_failed) / 10 )
-    idFailedLastDecile = int(len(data_failed) * 9 / 10)
-
-
-    print("STATISTICAL SUCESS RATE: %.2f" % means[0])
+    print("STATISTICAL SUCESS RATE: %.1f %%" % (100 * means[0]))
     print("Over the %i tests you performed, it means the probablity of sucess is in [%.2f, %.2f] with a 99%% condidence"  %(len(data_ligne), lowsucessbound, highsucessbound))
+    print("Failure due to collision: %.1f %%" %(100 * len(data_failed_with_collision)/float(len(data_ligne))))
+    print("Failure due to lack of time: %.1f %%" %(100 * len(data_failed_out_of_time)/float(len(data_ligne))))   
     print("Secondary Indicators Format : 'Name : Mean [First Decile, Ninth Decile]'")
     print("Travelled Distance (m) : %.2f [%.2f, %.2f]" %(means[2], data_success[2][idFirstDecile], data_success[2][idLastDecile] ))
     print("Time to complete the Test (s) : %.2f [%.2f, %.2f]" %(means[3], data_success[3][idFirstDecile], data_success[3][idLastDecile]))
     print("Consumed Energy (Wh) : %.2f [%.2f, %.2f]" %(means[4], data_success[4][idFirstDecile], data_success[4][idLastDecile]))
     print("Average Speed (m/s) : %.2f [%.2f, %.2f]" %(means[len(data_ligne[0])], data_success[len(data_ligne[0])][idFirstDecile], data_success[len(data_ligne[0])][idLastDecile]))
-    print("Average Linear Distance before collision over failed Tests (m) : %.2f [%.2f, %.2f]" %(means[7], data_failed[idFailedFirstDecile], data_failed[idFailedLastDecile]))
+    if len(data_failed_out_of_time) > 0:  
+    	print("Average Linear Distance before collision on failed Tests with collision (m) : %.2f [%.2f, %.2f]" %(means[7], data_failed_with_collision[idFailedFirstDecile], data_failed_with_collision[idFailedLastDecile]))
+    	print("Average Linear Distance before end of test on out of time Tests (m) : %.2f [%.2f, %.2f]" %(means[8], data_failed_out_of_time[idFailedByTimeFirstDecile], data_failed_out_of_time[idFailedByTimeLastDecile]))
