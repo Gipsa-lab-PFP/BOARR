@@ -59,7 +59,7 @@
       odometry_topic="ground_truth/odometry"
       parent_frame_id="world"
       child_frame_id="${namespace}/base_link"
-      mass_odometry_sensor="0.000001"
+      mass_odometry_sensor="0.00001"
       measurement_divisor="1"
       measurement_delay="0"
       unknown_delay="0.0"
@@ -84,7 +84,7 @@
 		params="namespace parent_link camera_suffix frame_rate max_range *origin">
 		<link name="${namespace}/camera_${camera_suffix}_link">
 		  <inertial>
-		    <mass value="1e-6" />
+		    <mass value="1e-5" />
 		    <origin xyz="0 0 0" rpy="0 0 0" />
 		    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
 		  </inertial>
@@ -159,7 +159,7 @@
 		  imu_suffix="gt"
 		  parent_link="${namespace}/base_link"
 		  imu_topic="imu"
-		  mass_imu_sensor="0.000001"
+		  mass_imu_sensor="0.00001"
 		  gyroscope_noise_density="0.0"
 		  gyroscope_random_walk="0.0"
 		  gyroscope_bias_correlation_time="1000.0"
@@ -179,7 +179,7 @@
 		  parent_link="${namespace}/base_link"
 		  gps_topic="gps"
 		  ground_speed_topic="ground_speed"
-		  mass_gps_sensor="0.000001"
+		  mass_gps_sensor="0.00001"
 		  horizontal_pos_std_dev="0.0"
 		  vertical_pos_std_dev="0.0"
 		  horizontal_vel_std_dev="0.0"
@@ -194,7 +194,7 @@
 		  magnetometer_suffix=""
 		  parent_link="${namespace}/base_link"
 		  magnetometer_topic="magnetic_field"
-		  mass_magnetometer_sensor="0.000001"
+		  mass_magnetometer_sensor="0.00001"
 		  ref_mag_north="0.000021493"
 		  ref_mag_east="0.000000815"
 		  ref_mag_down="0.000042795"
@@ -236,7 +236,7 @@
 		  parent_link="${namespace}/base_link"
 		  gps_topic="gps"
 		  ground_speed_topic="ground_speed"
-		  mass_gps_sensor="0.000001"
+		  mass_gps_sensor="0.00001"
 		  horizontal_pos_std_dev="0.05"
 		  vertical_pos_std_dev="0.05"
 		  horizontal_vel_std_dev="0.05"
