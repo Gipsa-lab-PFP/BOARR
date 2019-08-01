@@ -11,10 +11,12 @@ But in order to do so you will need to compile and link it to gazebo :
 - cmake ..
 - make
 - cd ..
-- GAZEBO_PLUGIN_PATH = ${GAZEBO_PLUGIN_PATH}:$(pwd)/build #TODO check that this is working but anyway you need to source the build directory
+- GAZEBO_PLUGIN_PATH = ${GAZEBO_PLUGIN_PATH}:$(pwd)/build (This works for me:$ ``cd build && export GAZEBO_PLUGIN_PATH=$PWD``
+Then, $ ``echo $GAZEBO_PLUGIN_PATH`` it must print out the path to .so file.
+#TODO check that this is working but anyway you need to source the build directory
 
 and finally : 
-- gzserver generate_forests.worlds
+- gzserver generate_forests.world
 
 It will generate worlds in ../worlds using the models in ../models and therefore needs both those dierctories. 
 
