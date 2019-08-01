@@ -11,7 +11,7 @@ But in order to do so you will need to compile and link it to gazebo :
 - cmake ..
 - make
 - cd ..
-- GAZEBO_PLUGIN_PATH = ${GAZEBO_PLUGIN_PATH}:$(pwd)/build (This works for me:$ ``cd build && export GAZEBO_PLUGIN_PATH=$PWD``
+- GAZEBO_PLUGIN_PATH = ${GAZEBO_PLUGIN_PATH}:$(PWD)/build 
 Then, $ ``echo $GAZEBO_PLUGIN_PATH`` it must print out the path to .so file.
 #TODO check that this is working but anyway you need to source the build directory
 
