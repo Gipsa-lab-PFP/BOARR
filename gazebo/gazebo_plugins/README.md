@@ -11,7 +11,7 @@ But in order to do so you will need to compile and link it to gazebo :
 - cmake ..
 - make
 - cd ..
-- GAZEBO_PLUGIN_PATH = ${GAZEBO_PLUGIN_PATH}:$(PWD)/build 
+- export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:$(PWD)/build 
 
 and finally : 
 - gzserver generate_forests.world

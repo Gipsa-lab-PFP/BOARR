@@ -61,8 +61,8 @@ $ git clone git@github.com:ttdm/rotors_simulator.git
 2. Compile your workspace using catkin_make
 3. Add a path to your GAZEBO_MODEL_PATH and you GAZEBO_PLUGIN_PATH :
 ```
-$ export GAZEBO_PLUGIN_PATH=(Your avoidance_benchmark path)/worlds/worlds_creation_plugin/build:$GAZEBO_PLUGIN_PATH
-$ export GAZEBO_MODEL_PATH=(Your avoidance_benchmark path)/worlds/models:$HOME/.gazebo/models:$GAZEBO_MODEL_PATH
+$ export GAZEBO_PLUGIN_PATH=(Your avoidance_benchmark path)/gazebo/worlds_creation_plugin/build:$GAZEBO_PLUGIN_PATH
+$ export GAZEBO_MODEL_PATH=(Your avoidance_benchmark path)/gazebo/models:$GAZEBO_MODEL_PATH
 ```
 For convenience, you should add it to your ~/.bashrc
 
