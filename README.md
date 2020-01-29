@@ -3,7 +3,7 @@
 This package main purpose is to test and compare the multiple existing avoidance algorithm for quadrotors with the hope that comparing the results could help choosing promising directions for future developments on autonomous obstacle avoidance.
 
 ## How does it work ?
-The avoidance benchmark consist mainly of a quadrotor simulator, multiple custom created worlds, a benchmark manager and some scripts to compute the benchmark indicators. It is based on Ros Kinetic & Gazebo 7.0.0.
+The avoidance benchmark consist mainly in a quadrotor simulator, multiple custom created worlds, a benchmark manager and some scripts to compute the benchmark indicators. It is based on Ros Kinetic & Gazebo 7.0.0.
 The simulator is RotorS from the ETHZ which is both the most common multirotor model in ROS and the closest simulator to a real multirotor. On the 01/04/2019, it is possible to use the main branch from the ETHZ project available [here](https://github.com/ethz-asl/rotors_simulator). It will probably be possible to use this main branch in the future. In case there are some major modifications that break the compability between their project and mine, please create an issue and I will fork RotorS.
 Worlds are created through a custom world plugin that has been created specifically for this purpose. This plugin generates GAZEBO forests of 6700m2. The density of the forest is a parameter during its creation which allow some diversity in the test environments. The chosen environment is a forest since it is in the literature the most common environment to test avoidance algorithms for quadrotors.
 The benchmark manager send the coordinates where the drone should go and log informations in order to output logical indicators to characterize the tests.
