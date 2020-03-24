@@ -16,7 +16,7 @@
 #include <nav_msgs/Odometry.h>
 #include <gazebo_msgs/ContactsState.h>
 #include <topic_tools/MuxSelect.h>
-#include <mav_msgs/Actuators.h>
+#include <mavros_msgs/ActuatorControl.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -68,7 +68,7 @@ class Test
 
         //used in code statiscal functions
         void collisionCallback(const gazebo_msgs::ContactsState::ConstPtr& msg);
-        void motorCallback(const mav_msgs::ActuatorsConstPtr& msg);
+        void motorCallback(const mavros_msgs::ActuatorControlConstPtr& msg);
         int _collisionNumber;
         double linearDist;
         double consumedEnergy, prevP;

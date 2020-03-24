@@ -396,18 +396,25 @@ void Test::timerCallback(const ros::TimerEvent& timer)
     }
 }
 
-void Test::motorCallback(const mav_msgs::ActuatorsConstPtr& msg)
-{
-    //compute Power for the current motor speeds
-    double currentP = 0;
-    for ( int i= 0; i < 4 ; i ++ )
+void Test::motorCallback(const mavros_msgs::ActuatorControlConstPtr& msg)
+{    
+//     //compute Power for the current motor speeds
+//     double currentP = 0;
+//     for ( int i= 0; i < 4 ; i ++ )
+//     {
+//         currentP += 2.13e-7 * std::pow(std::abs(msg->angular_velocities[i]),3) 
+//                      + 1.75e-4 * std::pow(std::abs(msg->angular_velocities[i]),2) 
+//                      - 0.0187 * std::pow(std::abs(msg->angular_velocities[i]),1)
+//                      + 1.314;
+//     }
+// compute Power from actuator commands
+    if(msg->group_mix!=0)
     {
-        currentP += 2.13e-7 * std::pow(std::abs(msg->angular_velocities[i]),3) 
-                     + 1.75e-4 * std::pow(std::abs(msg->angular_velocities[i]),2) 
-                     - 0.0187 * std::pow(std::abs(msg->angular_velocities[i]),1)
-                     + 1.314;
+	return;
     }
-    
+    //TODO compute energy better than that !!!
+    double currentP = msg->controls[3];
+
     if ( prevP != -1 ) // prevP = -1 => first callback call
     {
         consumedEnergy += ( msg->header.stamp.toSec() - prevT.toSec() ) * currentP /3600.; //from J to Wh

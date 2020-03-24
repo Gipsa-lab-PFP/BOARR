@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name='iris_realsense_d435'>
+    <include>
+      <uri>model://iris</uri>
+    </include>
+
+    <include>
+      <uri>model://realsense_D435</uri>
+      <!--<pose>0.04 0 0.055 0 -0.3 0</pose>-->
+      <pose>0.1 0.015 0 0 0 0</pose>
+    </include>
+    <joint name="realsense_joint" type="revolute">
+      <child>realsense_D435::link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+    <plugin name='wind_plugin' filename='libgazebo_wind_plugin.so'>
+      <frameId>world</frameId>
+      <linkName>iris::base_link</linkName>
+      <robotNamespace/>
+      <xyzOffset>0 0 0</xyzOffset> <!-- [m] [m] [m] -->
+      <windDirection>1 0 0</windDirection>
+      <windForceMean>1</windForceMean> <!-- [N] -->
+      <windForceVariance>0.5</windForceVariance> <!-- [N] -->
+      <windGustDirection>0 1 0</windGustDirection>
+      <windGustDuration>5</windGustDuration> <!-- [s] -->
+      <windGustDurationCycle>20</windGustDurationCycle> <!-- [s] -->
+      <windGustForceMean>1</windGustForceMean> <!-- [N] -->
+      <windGustForceVariance>0.5</windGustForceVariance> <!-- [N] -->
+    </plugin>
+
+    <!-- collision_detection -->
+    <include>
+      <uri>model://bumper_sensor</uri>
+    </include>
+    <joint name="bumper_joint" type="revolute">
+      <child>bumper_sensor::bumper_link</child>
+      <parent>iris::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+    
+    <!-- ground truth odometry -->
+    <plugin name="ground_truth_odometry" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>100.0</updateRate>
+      <bodyName>iris::base_link</bodyName>
+      <topicName>odom_gt</topicName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+
+    <!-- noisy  odometry -->
+    <plugin name="noisy_odometry" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>100.0</updateRate>
+      <bodyName>iris::base_link</bodyName>
+      <topicName>odom</topicName>
+      <gaussianNoise>0.1</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+
+  </model>
+</sdf>

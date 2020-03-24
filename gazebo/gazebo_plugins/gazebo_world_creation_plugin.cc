@@ -2,7 +2,7 @@
 #include "gazebo/physics/physics.hh"
 #include "gazebo/common/common.hh"
 #include "gazebo/gazebo.hh"
-#include "gazebo/math/gzmath.hh"
+//#include "gazebo/math/gzmath.hh"
 #include "gazebo/sensors/sensors.hh"
 #include "gazebo/rendering/rendering.hh"
 
@@ -13,6 +13,7 @@
 #include <random>
 #include <fstream>
 #include <memory>
+#include <sstream>
 
 namespace gazebo
 {
@@ -40,7 +41,7 @@ namespace gazebo
             void move_heightmap();
             bool InMinMax(double x, double min, double max);
             double RandNormal(double mean, double stddev);
-            double SpawnOneTree(double x, double y, double z);
+            double SpawnOneTree(double x, double y, double z, int idx=0);
             bool CheckRestrictions(double x, double y);
             void GenerateYamlFile();
 
@@ -51,6 +52,8 @@ namespace gazebo
 
     void HeightMap::Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
     {
+	std::cout << "plugin HeightMap is loading" << std::endl; 
+        
         // all parameters
         forestMaxNumber = 10; //number of world to generate
 
@@ -62,8 +65,8 @@ namespace gazebo
         forestGaussianSTDDEV.push_back(60);
 
         heightMapModelNumber=5; //number of available heightmaps
-        heightMapSize = 82; //XXX also in form of a constant in line 306 and 333
-        safeMargin=5.; // No tree will be spawned in the closest safemargin to the side of the map on which there will be waypoints
+        heightMapSize = 182; //XXX also in form of a constant in line 306 and 333
+        safeMargin=55.; // No tree will be spawned in the closest safemargin to the side of the map on which there will be waypoints
         x_min = - heightMapSize/2. + safeMargin; 
         x_max = heightMapSize/2. - safeMargin; 
         y_min = - heightMapSize/2. + safeMargin;
@@ -96,20 +99,21 @@ namespace gazebo
 
     void HeightMap::OnUpdate(const common::UpdateInfo& _info) 
     {
-        //std::cout << "current it " << parent->GetIterations() << std::endl; 
-        if ( parent->GetIterations() > 500 && hgt_done < 0 )
+        //std::cout << "current it " << parent->Iterations() << std::endl; 
+        if ( parent->Iterations() > 500 && hgt_done < 0 )
         {
             std::cout << forestNumber+1 << "th world genertion" << std::endl; 
-            std::cout << "it count = " << parent->GetIterations() << " Generating the heightmap" << std::endl; 
+            std::cout << "it count = " << parent->Iterations() << " Generating the heightmap" << std::endl; 
             insert_heightmap();
-            hgt_done = parent->GetIterations();
+            hgt_done = parent->Iterations();
             std::cout << "end heightmap" << std::endl; 
         }
-        else if ( parent->GetIterations() > 1000 && forest_done < 0 )
+        else if ( parent->Iterations() > 1000 && forest_done < 0 )
         {
-            std::cout << "it count = " << parent->GetIterations() << " Generating the Yaml File" << std::endl; 
+            std::cout << "it count = " << parent->Iterations() << " Generating the Yaml File" << std::endl; 
             GenerateYamlFile();
-            std::cout << "it count = " << parent->GetIterations() << " Generating the forest" << std::endl; 
+            std::cout << "it count = " << parent->Iterations() << " Generating the forest" << std::endl;
+	    int tree_idx=0;
             for ( int i = 0; i < forestGaussianCenterNumber ; i++ )
             {
                 double centeringRatio = ( 1 - 2*forestGaussianSTDDEV.at(i)/heightMapSize);
@@ -128,29 +132,29 @@ namespace gazebo
                         continue;
                     }
                     double z= heightMapZ(x, y);
-                    SpawnOneTree(x,y,z);
+                    SpawnOneTree(x,y,z, tree_idx++);
                 }
             }
-            forest_done = parent->GetIterations();
+            forest_done = parent->Iterations();
             std::cout << "end forest creation" << std::endl; 
         }
-        else if ( parent->GetIterations() > 1500 && saved < 0 )
+        else if ( parent->Iterations() > 1500 && saved < 0 )
         {
             // save the world
-            std::cout << "it count = " << parent->GetIterations() << " Saving the forest" << std::endl; 
+            std::cout << "it count = " << parent->Iterations() << " Saving the forest" << std::endl; 
             std::string worldName = std::string("../worlds/forest") + std::to_string(forestNumber) + std::string(".world");
             parent->Save(worldName);
-            saved = parent->GetIterations();
+            saved = parent->Iterations();
             std::cout << "end saving" << std::endl; 
         }
-        else if ( parent->GetIterations() > 2000 && insertCam < 0 )
+        else if ( parent->Iterations() > 2000 && insertCam < 0 )
         {
             //std::cout << "begin camera creation" << std::endl; 
-                //insert_camera();
+	    //insert_camera();
             //std::cout << "end camera creation" << std::endl; 
-            insertCam = parent->GetIterations();
+            insertCam = parent->Iterations();
         }
-        else if ( parent->GetIterations() > 2500 && takeScreen < 0 )
+        else if ( parent->Iterations() > 2500 && takeScreen < 0 )
         {
             std::string imgName = std::string("../worlds/forest") + std::to_string(forestNumber) + std::string(".jpg");
             std::cout << "settting up the dynamic pointer" << std::endl; 
@@ -164,10 +168,10 @@ namespace gazebo
             //camera->C
             //camera->Camera()->Render();
             //camera->Camera()->SaveFrame(imgName);
-            takeScreen = parent->GetIterations();
+            takeScreen = parent->Iterations();
             std::cout << "end frame saved" << std::endl; 
         }
-        else if ( parent->GetIterations() > 3000 )
+        else if ( parent->Iterations() > 3000 )
         {
             std::cout << "resetting for next world creation" << std::endl;
             if ( forestNumber < forestMaxNumber - 1 ) 
@@ -194,7 +198,7 @@ namespace gazebo
             }
             else
             {
-                std::cout << "all the worlds have been generated \n don't forget to use the .sh file to treat the created world files. \n Plugin stopped on a getchar()." << std::endl;
+                std::cout << "all the worlds have been generated \n don't forget to use the 'delete_plugin_in_worlds.sh' file to treat the created world files. \n Plugin stopped on a getchar()." << std::endl;
                 std::getchar();
             }
         }
@@ -232,15 +236,15 @@ namespace gazebo
     double HeightMap::heightMapZ(double x, double y )
     {
         // getting the pointer to the HeightmapShape
-        physics::ModelPtr model = parent->GetModel("heightmap");
+        physics::ModelPtr model = parent->ModelByName("heightmap");
         physics::CollisionPtr collision = model->GetLink("link")->GetCollision("collision");
         physics::HeightmapShapePtr heightmap = boost::dynamic_pointer_cast<physics::HeightmapShape>(collision->GetShape());
 
         // coordinate transform from regular Word (x,y) to the HeightmapShape (index_x,index_y) 
-        math::Vector3 size = heightmap->GetSize(); 
-        math::Vector2i vc = heightmap->GetVertexCount();
-        int index_x = (  ( (x + size.x/2)/size.x ) * vc.x - 1 ) ;
-        int index_y = (  ( (-y + size.y/2)/size.y ) * vc.y - 1 ) ;
+	ignition::math::Vector3d size = heightmap->Size(); 
+	ignition::math::Vector2i vc = heightmap->VertexCount();
+        int index_x = (  ( (x + size.X()/2)/size.X() ) * vc.X() - 1 ) ;
+        int index_y = (  ( (-y + size.Y()/2)/size.Y() ) * vc.Y() - 1 ) ;
 
         //  getting the height :
         double z =  heightmap->GetHeight( index_x , index_y ) ; 
@@ -248,47 +252,82 @@ namespace gazebo
         return z;
     }
 
-    double HeightMap::SpawnOneTree(double x, double y, double z)
+    double HeightMap::SpawnOneTree(double x, double y, double z, int idx)
     {
-        std::string treeString1 =  "<sdf version='1.6'>\
-                                    <model name='my_mesh'>\
-                                    <pose> ";
-        std::string space = " ";
-        std::string treeString2 = " </pose>\
-                                   <static>1</static>\
-                                   <link name='body'>\
-                                   <visual name='visual'>\
-                                   <geometry>\
-                                   <mesh>\
-                                   <uri>model://trees/";
-        std::string treeString3 =  ".dae</uri>\
-                                    <scale>1 1 1</scale>\
-                                    </mesh>\
-                                    </geometry>\
-                                    </visual>\
-                                    <collision name='collision'>\
-                                    <geometry>\
-                                    <mesh>\
-                                    <uri>model://trees/";
-        std::string treeString4 =  ".dae</uri>\
-                                    <scale>1 1 1</scale>\
-                                    </mesh>\
-                                    </geometry>\
-                                    </collision>\
-                                    <self_collide>0</self_collide>\
-                                    <kinematic>0</kinematic>\
-                                    <gravity>1</gravity>\
-                                    </link>\
-                                    </model>\
-                                    </sdf>";
+	std::stringstream ss;
+	int chosenTreeModel = rand() % treeModelNumber;
+	
+	ss << "<sdf version='1.6'>" << std::endl
+	   << "<model name='my_mesh" << idx << "'>" << std::endl
+	   << "<pose>" << x << " " << y << " " << z << " 0 0 " 
+	   << rand()/(double)RAND_MAX*3.14-1.57 << "</pose>" << std::endl
+	   << "<static>1</static>" << std::endl
+	   << "<link name='body'>" << std::endl
+	   << "<visual name='visual'>" << std::endl
+	   << "<geometry>" << std::endl
+	   << "<mesh>" << std::endl
+	   << "<uri>model://trees/" << chosenTreeModel << ".dae</uri>" << std::endl
+	   << "<scale>1 1 1</scale>"
+	   << "</mesh>" << std::endl
+	   << "</geometry>" << std::endl
+	   << "</visual>" << std::endl
+	   << "<collision name='collision'>" << std::endl
+	   << "<geometry>" << std::endl
+	   << "<mesh>" << std::endl
+	   << "<uri>model://trees/" << chosenTreeModel << ".dae</uri>" << std::endl
+	   << "<scale>1 1 1</scale>" << std::endl
+	   << "</mesh>" << std::endl
+	   << "</geometry>" << std::endl
+	   << "</collision>" << std::endl
+	   << "<self_collide>0</self_collide>" << std::endl
+	   << "<kinematic>0</kinematic>" << std::endl
+	   << "<gravity>1</gravity>" << std::endl
+	   << "</link>" << std::endl
+	   << "</model>" << std::endl
+	   << "</sdf>";
+	
+	
+	
+//         std::string treeString1 =  "<sdf version='1.6'>\
+//                                     <model name='my_mesh'>\
+//                                     <pose> ";
+//         std::string space = " ";
+//         std::string treeString2 = " </pose>\
+//                                    <static>1</static>\
+//                                    <link name='body'>\
+//                                    <visual name='visual'>\
+//                                    <geometry>\
+//                                    <mesh>\
+//                                    <uri>model://trees/";
+//         std::string treeString3 =  ".dae</uri>\
+//                                     <scale>1 1 1</scale>\
+//                                     </mesh>\
+//                                     </geometry>\
+//                                     </visual>\
+//                                     <collision name='collision'>\
+//                                     <geometry>\
+//                                     <mesh>\
+//                                     <uri>model://trees/";
+//         std::string treeString4 =  ".dae</uri>\
+//                                     <scale>1 1 1</scale>\
+//                                     </mesh>\
+//                                     </geometry>\
+//                                     </collision>\
+//                                     <self_collide>0</self_collide>\
+//                                     <kinematic>0</kinematic>\
+//                                     <gravity>1</gravity>\
+//                                     </link>\
+//                                     </model>\
+//                                     </sdf>";
 
-        int chosenTreeModel = rand() % treeModelNumber;
-        std::string treeString = treeString1 + std::to_string(x) + space + std::to_string(y) + space + std::to_string(z)
-                + space + std::to_string(0) + space + std::to_string(0) + space + std::to_string(rand()/(double)RAND_MAX*3.14-1.57)
-                + treeString2 + std::to_string(chosenTreeModel) + treeString3 + std::to_string(chosenTreeModel) + treeString4;
+//         int chosenTreeModel = rand() % treeModelNumber;
+//         std::string treeString = treeString1 + std::to_string(x) + space + std::to_string(y) + space + std::to_string(z)
+//                 + space + std::to_string(0) + space + std::to_string(0) + space + std::to_string(rand()/(double)RAND_MAX*3.14-1.57)
+//                 + treeString2 + std::to_string(chosenTreeModel) + treeString3 + std::to_string(chosenTreeModel) + treeString4;
 
         sdf::SDF treeSDF;
-        treeSDF.SetFromString(treeString);
+//         treeSDF.SetFromString(treeString);
+        treeSDF.SetFromString(ss.str());
         parent->InsertModelSDF(treeSDF);
     }
 
@@ -306,7 +345,7 @@ namespace gazebo
                                          <heightmap>\
                                          <uri>model://heightmaps/";
         std::string heightMapString2 =  ".img</uri>\
-                                         <size>82 82 30</size>\
+                                         <size>182 182 40</size>\
                                          <pos>0 0 0</pos>\
                                          </heightmap>\
                                          </geometry>\
@@ -338,9 +377,9 @@ namespace gazebo
                                          <min_height>12</min_height>\
                                          <fade_dist>5</fade_dist>\
                                          </blend>\
-                                         <uri>file://heightmaps/map";
+                                         <uri>model://heightmaps/";
         std::string heightMapString3 = ".img</uri>\
-                                        <size>82 82 30</size>\
+                                        <size>182 182 40</size>\
                                         </heightmap>\
                                         </geometry>\
                                         </visual>\
@@ -363,6 +402,8 @@ namespace gazebo
     
     void HeightMap::insert_camera()
     {
+	double z =  heightMapZ( 0 , 0 ) + 100.;
+	
         // insert the heightmap : 
         //std::string cameraString = "<sdf version='1.6'>\
                                       //<model name='camera'>\
@@ -401,38 +442,49 @@ namespace gazebo
                                       //</model>\
                                     //</sdf>";
 
-        std::string cameraString = "<sdf version='1.6'>\
-                                       <model name='camera";
+//         std::string cameraString = "<sdf version='1.6'>\
+//                                        <model name='camera";
         
-        std::string cameraString2 = "'>\
-                                          <static>true</static>\
-                                          <pose>0 0 55 0 1.57079633 0</pose>\
-                                          <link name='link'>\
-                                            <sensor name='my_camera";
+//         std::string cameraString2 = "'>\
+//                                           <static>true</static>\
+//                                           <pose>0 0 55 0 1.57079633 0</pose>\
+//                                           <link name='link'>\
+//                                             <sensor name='my_camera";
        
-        std::string cameraString3 = "' type='camera'>\
-                                              <camera>\
-                                                <horizontal_fov>1.57079633</horizontal_fov>\
-                                                <image>\
-                                                  <width>2160</width>\
-                                                  <height>2160</height>\
-                                                </image>\
-                                                <clip>\
-                                                  <near>0.1</near>\
-                                                  <far>1000</far>\
-                                                </clip>\
-                                              </camera>\
-                                              <always_on>1</always_on>\
-                                              <update_rate>30</update_rate>\
-                                            </sensor>\
-                                          </link>\
-                                        </model>\
-                                    </sdf>";
-
-        std::string cameraStringFinal = cameraString + std::to_string(forestNumber) + cameraString2 + 
-            std::to_string(forestNumber) + cameraString3;
+//         std::string cameraString3 = "' type='camera'>\
+//                                               <camera>\
+//                                                 <horizontal_fov>1.57079633</horizontal_fov>\
+//                                                 <image>\
+//                                                   <width>2160</width>\
+//                                                   <height>2160</height>\
+//                                                 </image>\
+//                                                 <clip>\
+//                                                   <near>0.1</near>\
+//                                                   <far>1000</far>\
+//                                                 </clip>\
+//                                               </camera>\
+//                                               <always_on>1</always_on>\
+//                                               <update_rate>30</update_rate>\
+//                                             </sensor>\
+//                                           </link>\
+//                                         </model>\
+//                                     </sdf>";
+//         std::string cameraStringFinal = cameraString + std::to_string(forestNumber) + cameraString2 + 
+//             std::to_string(forestNumber) + cameraString3;
+//         sdf::SDF cameraSDF;
+//         cameraSDF.SetFromString(cameraStringFinal);
+	
+	std::stringstream ss;
+	ss << "<sdf version='1.6'>" << std::endl
+	   << "<gui>" << std::endl
+	   << "<camera name='user_camera'>" << std::endl
+	   << "<pose>0 0 " << z << " 0 1.57079633 0</pose>" << std::endl
+	   << "</camera>" << std::endl
+	   << "</gui>" << std::endl
+	   << "</sdf>";
         sdf::SDF cameraSDF;
-        cameraSDF.SetFromString(cameraStringFinal);
+        cameraSDF.SetFromString(ss.str());
+	
         parent->InsertModelSDF(cameraSDF);
     }
 

@@ -1,16 +1,16 @@
-spawnPos: {x: -40 , y: 10 , z: 2.97712 }
+spawnPos: {x: -40 , y: -10 , z: 289.565 }
 
 goals:
-  '1': {x: 10, y: -40 , z: 6.81067, minDistToValidate: 1.}
-  '2': {x: 25, y: 40 , z: 8.64038, minDistToValidate: 1.}
-  '3': {x: -40, y: -25 , z: 2.44606, minDistToValidate: 1.}
-  '4': {x: 40, y: -25 , z: 6.92866, minDistToValidate: 1.}
-  '5': {x: -25, y: 40 , z: 6.21896, minDistToValidate: 1.}
-  '6': {x: -10, y: -40 , z: 5.05495, minDistToValidate: 1.}
-  '7': {x: 40, y: 10 , z: 8.83082, minDistToValidate: 1.}
-  '8': {x: -40, y: 10 , z: 4.97712, minDistToValidate: 1.}
-  '9': {x: 25, y: -40 , z: 7.36924, minDistToValidate: 1.}
-  '10': {x: -10, y: 40 , z: 5.41909, minDistToValidate: 1.}
-  '11': {x: -25, y: -40 , z: 3.95635, minDistToValidate: 1.}
-  '12': {x: 40, y: 10 , z: 8.83082, minDistToValidate: 1.}
-  '13': {x: -40, y: 10 , z: 4.97712, minDistToValidate: 1.}
+  '1': {x: 40, y: 25 , z: 288.141, minDistToValidate: 1.}
+  '2': {x: 10, y: -40 , z: 301.227, minDistToValidate: 1.}
+  '3': {x: -25, y: 40 , z: 283.874, minDistToValidate: 1.}
+  '4': {x: 40, y: 10 , z: 290.18, minDistToValidate: 1.}
+  '5': {x: -10, y: -40 , z: 302.452, minDistToValidate: 1.}
+  '6': {x: -40, y: 25 , z: 285.101, minDistToValidate: 1.}
+  '7': {x: 40, y: 10 , z: 290.18, minDistToValidate: 1.}
+  '8': {x: -25, y: -40 , z: 300.828, minDistToValidate: 1.}
+  '9': {x: 10, y: 40 , z: 285.353, minDistToValidate: 1.}
+  '10': {x: 25, y: -40 , z: 299.546, minDistToValidate: 1.}
+  '11': {x: -40, y: 10 , z: 287.345, minDistToValidate: 1.}
+  '12': {x: 40, y: 10 , z: 290.18, minDistToValidate: 1.}
+  '13': {x: -10, y: -40 , z: 302.452, minDistToValidate: 1.}

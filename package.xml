@@ -9,6 +9,8 @@
   <author email="thibaut.tezenas-du-montcel@gipsa-lab.fr">Thibaut Tezenas Du Montcel</author>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>gazebo_ros</buildtool_depend>
+  
   <build_depend>roscpp</build_depend>
   <build_depend>cv_bridge</build_depend>
   <build_depend>std_msgs</build_depend>
@@ -16,10 +18,14 @@
   <build_depend>image_transport</build_depend>
   <build_depend>gazebo_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
-  <build_depend>mav_msgs</build_depend>
+  <build_depend>mavros_msgs</build_depend>
   <build_depend>message_filters</build_depend>
   <build_depend>topic_tools</build_depend>
-  
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>gazebo_dev</build_depend>
+  <build_depend>camera_info_manager</build_depend>
+
+
   <run_depend>roscpp</run_depend>
   <run_depend>cv_bridge</run_depend>
   <run_depend>std_msgs</run_depend>
@@ -27,7 +33,14 @@
   <run_depend>image_transport</run_depend>
   <run_depend>gazebo_msgs</run_depend>
   <run_depend>geometry_msgs</run_depend>
-  <run_depend>mav_msgs</run_depend>
+  <run_depend>mavros_msgs</run_depend>
   <run_depend>message_filters</run_depend>
   <run_depend>topic_tools</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>camera_info_manager</run_depend>
+
+  <!-- Export gazebo paths -->
+  <export>
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}/gazebo" gazebo_model_path="${prefix}/gazebo/models"/>
+  </export>
 </package>
