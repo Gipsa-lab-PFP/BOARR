@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <launch>
+    <env name="PX4_HOME_LAT" value="45.193100"/>
+    <env name="PX4_HOME_LON" value="5.763788"/>
     <env name="PX4_HOME_ALT" value="0"/>
+
     
     <!-- MAVROS posix SITL environment launch script -->
     <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
     <!-- vehicle pose -->
-    <arg name="x" default="0"/>
-    <arg name="y" default="0"/>
-    <arg name="z" default="0"/>
+    <arg name="x" default="10"/>
+    <arg name="y" default="40"/>
+    <arg name="z" default="242.008"/>
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/>
@@ -29,7 +32,7 @@
     <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
     <arg name="respawn_mavros" default="false"/>
     <!-- PX4 configs -->
-    <arg name="interactive" default="true"/>
+    <arg name="interactive" default="false"/>
     <!-- PX4 SITL and Gazebo -->
     <include file="$(find px4)/launch/posix_sitl.launch">
         <arg name="x" value="$(arg x)"/>
@@ -62,5 +65,8 @@
         <!--<remap from="pose_cov" to="/mavros/vision_pose/pose_cov" />-->
         <remap from="speed_twist_cov" to="/mavros/vision_speed/speed_twist_cov" />
     </node>
+
+    <!-- camera transform publisher-->
+    <node name="tf_color" pkg="tf" type="static_transform_publisher" args="0.1 0.015 0 -1.571 0 -1.571 base_link color 50"/>
 
 </launch>

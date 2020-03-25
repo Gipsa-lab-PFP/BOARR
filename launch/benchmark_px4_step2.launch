@@ -1,7 +1,7 @@
 <!-- launch : the test manager if wanted  -->  
 <launch>
-    <arg name="mav_name" default="hummingbird"/>
-    <arg name="world_name" default="worlds/forestO"/>
+    <arg name="mav_name" default=""/>
+    <arg name="world_name" default="worlds/forest0"/>
     <arg name="savingPrefix" default="benchmark_results"/>
     <arg name="saveImage" default="false"/>
     <arg name="imageName" default="default_image.jpg" />
@@ -15,13 +15,16 @@
         <rosparam command="load" file="$(find avoidance_benchmark)/param/benchmark_manager_parameters.yaml"/>
         <rosparam command="load" file="$(find avoidance_benchmark)/param/custom_parameters.yaml"/>
         <rosparam command="load" file="$(find avoidance_benchmark)/gazebo/$(arg world_name).yaml"/>
-        <remap from="odometry" to="$(arg mav_name)/ground_truth/odometry"/>
+        <remap from="mavros/cmd/arming" to="$(arg mav_name)/mavros/cmd/arming"/>
+        <remap from="mavros/set_mode" to="$(arg mav_name)/mavros/set_mode"/>
+        <remap from="odometry" to="$(arg mav_name)/odom_gt"/>
         <remap from="command/output_trajectory" to="$(arg mav_name)/command/trajectory"/>
-        <remap from="command/global_goal" to="$(arg mav_name)/command/global_goal"/>
-        <remap from="command/global_goal_gazebo_ref" to="$(arg mav_name)/command/global_goal_gazebo_ref"/>
-        <remap from="raw_camera" to="$(arg mav_name)/camera_looking_ahead/image_raw"/>
-        <remap from="motor_speed" to="$(arg mav_name)/motor_speed"/>
-        <remap from="bumper_vals" to="$(arg mav_name)/bumper_vals"/>
+        <remap from="command/goal" to="$(arg mav_name)/command/goal"/>
+        <remap from="command/goal_gps" to="$(arg mav_name)/command/goal_gps"/>
+        <remap from="command/local_position" to="$(arg mav_name)/mavros/setpoint_position/local"/>
+        <remap from="raw_camera" to="$(arg mav_name)/realsense_plugin/camera/color/image_raw"/>
+        <remap from="motor_speed" to="$(arg mav_name)/mavros/actuator_control"/>
+        <remap from="bumper_vals" to="$(arg mav_name)/benchmarker/collision"/>
         <param name="saveImage" value="$(arg saveImage)"/>            
         <param name="imageName" value="$(arg savingPrefix)/$(arg imageName)"/>
         <param name="saveVideo" value="$(arg saveVideo)"/>            

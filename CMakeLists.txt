@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   gazebo_msgs
   geometry_msgs
+  geographic_msgs
   mavros_msgs
   trajectory_msgs
   nav_msgs
@@ -33,10 +34,10 @@ include_directories(
 )
 
 add_executable(benchmark_manager 
-		src/benchmark_manager/test_node.cpp
-		src/benchmark_manager/test.cpp
+		src/benchmark_manager/benchmark_manager_node.cpp
+		src/benchmark_manager/BenchmarkManager.cpp
 		src/benchmark_manager/util.cpp
-		src/benchmark_manager/image_creation.cpp)
+		src/benchmark_manager/BenchmarkManager_ImageCreation.cpp)
 add_dependencies(benchmark_manager ${${PROJECT_NAME}_EXPORTED_TARGETS}${catkin_EXPORTED_TARGETS})
 target_link_libraries(benchmark_manager ${catkin_LIBRARIES} ${OpenCV_LIBS} )
 
