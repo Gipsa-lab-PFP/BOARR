@@ -164,6 +164,9 @@ void BenchmarkManager::initParam()
     prevP = -1; // Init for energy consumption computation
 
     /*********** INITIALIZATIONS ***************/
+
+    _worldCallback_CALLED = false;
+    
     //setup of the video writer in full HD at the defined frequency. 
     if ( _saveVideo )
     {
@@ -366,9 +369,10 @@ void BenchmarkManager::gazeboWorldCallback(const gazebo_msgs::ModelStates::Const
     {
         if ( msg->name.at(i).find("mesh")!=std::string::npos || msg->name.at(i).find("ylin")!=std::string::npos ) //check if the item name has ylin included => cylinders=> or mesh "my_mesh" which is the name of the trees
         {
-            this->_modelPos.push_back(Cart(msg->pose.at(i).position.x,msg->pose.at(i).position.y,msg->pose.at(i).position.z));
+            _modelPos.push_back(Cart(msg->pose.at(i).position.x,msg->pose.at(i).position.y,msg->pose.at(i).position.z));
         }
     }
+    
     _worldCallback_CALLED = true;
     //this callback should only be executed one time so : 
     _worldSub.shutdown();
@@ -535,11 +539,9 @@ void BenchmarkManager::linkStatesCallback(const gazebo_msgs::LinkStatesConstPtr&
     ros::Time curT(ros::Time::now());
     if(_rotor_links.empty())
     {
-	std::string str_rotor("rotor_");
 	for(int i=0; i<msg->name.size(); i++)
 	{
-	    std::size_t found = msg->name[i].find(str_rotor);
-	    if(found!=std::string::npos)
+	    if(msg->name[i].find("rotor_")!=std::string::npos)
 	    {
 		_rotor_links.push_back(i);
 	    }
