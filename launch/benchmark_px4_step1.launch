@@ -66,6 +66,23 @@
         <remap from="speed_twist_cov" to="/mavros/vision_speed/speed_twist_cov" />
     </node>
 
+    <!-- Multi mux to switch between between the commands providers -->
+    <arg name="mux_topic_list" default="[setpoint_accel/accel,setpoint_attitude/cmd_vel,setpoint_attitude/thrust,setpoint_position/global,setpoint_position/global_to_local,setpoint_position/local,setpoint_raw/attitude,setpoint_raw/global,setpoint_raw/local,setpoint_raw/target_attitude,setpoint_raw/target_global,setpoint_raw/target_local,setpoint_trajectory/desired,setpoint_trajectory/local,setpoint_velocity/cmd_vel,setpoint_velocity/cmd_vel_unstamped]"/>
+    <node pkg="avoidance_benchmark" type="multi_mux.py" name="command_mux" >
+      <rosparam param="output_topics" subst_value="True">$(arg mux_topic_list)</rosparam> 
+      <param name="output_prefix" value="/mavros/"/>
+      <param name="input1_prefix" value="benchmark_manager"/>
+      <param name="input2_prefix" value="avoidance_controller"/>
+      <remap from="select" to="command_mux/select" />
+    </node>
+		
+    <!-- Add the noisy depth sensor -->
+    <node name="noisy_realsense" pkg="avoidance_benchmark" type="noisy_realsense" output="screen">
+       	<remap from="raw_realsense" to="realsense_plugin/camera/depth/image_raw" />
+       	<remap from="perfect_realsense" to="realsense_plugin/camera/depth/perfect_realsense" />
+       	<remap from="noisy_realsense" to="realsense_plugin/camera/depth/noisy_realsense" />
+    </node>
+
     <!-- camera transform publisher-->
     <node name="tf_color" pkg="tf" type="static_transform_publisher" args="0.1 0.015 0 -1.571 0 -1.571 base_link color 50"/>
 

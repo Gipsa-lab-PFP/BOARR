@@ -10,6 +10,7 @@
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/Int32.h>
 #include <gazebo_msgs/ContactsState.h>
+#include <topic_tools/MuxSelect.h>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -45,8 +46,8 @@ BenchmarkManager::BenchmarkManager() :
     // Odometry Callback and main callback, send new goal when a goal is reached, update most of the benchmark performance criteria 
     _odomSub = _nh.subscribe("odometry", 1, &BenchmarkManager::odomCallback, this );
 
-    // Motor Callback, to compute the Energy Used during the flight
-    _motorSub = _nh.subscribe("motor_speed", 1, &BenchmarkManager::motorCallback, this );
+    // LinkState Callback, to compute the Energy Used during the flight
+    _linkStatesSub = _nh.subscribe("/gazebo/link_states", 1, &BenchmarkManager::linkStatesCallback, this );
 
     // MAV state Callback
     _stateSub = _nh.subscribe<mavros_msgs::State>("mavros/state", 10, &BenchmarkManager::stateCallback, this);
@@ -58,9 +59,11 @@ BenchmarkManager::BenchmarkManager() :
     _imgSub = it.subscribe( "raw_camera", 1, &BenchmarkManager::imgCallback, this); 
     
     // Mavros arming / setMode clients
-    _armingClient = _nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming", true);
-    _setModeClient = _nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode", true);
+    _armingClient = _nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
+    _setModeClient = _nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
     
+    // Mux client
+    _muxClient = _nh.serviceClient<topic_tools::MuxSelect>("command_mux/select");
     
 //     ros::Duration(.1).sleep(); // This sleep is also needed to let all the ros stuff initialize itself
   
@@ -105,6 +108,14 @@ void BenchmarkManager::initParam()
     _perfectTest = nh_private_.param<bool>("perfectTest",true);
 
     _controlType = nh_private_.param<int>("controlType", 0); 
+    
+    _muxManagerInput = nh_private_.param<std::string>("mux_manager_input", "benchmark_manager" );
+    _muxAvoidanceInput = nh_private_.param<std::string>("mux_manager_input", "avoidance_controller" );
+    
+    _motorCoeff = nh_private_.param<double>("motor_coeff", 6e-5);
+    _rotorVelSlowdown = nh_private_.param<double>("rotor_vel_slowdown", 10.);
+    
+    
     /*********** GOAL SETUP, those parameters are defined in the world.yaml file ***************/
     std::string goal_string = "goals/";
     unsigned int i = 1;
@@ -181,7 +192,7 @@ void BenchmarkManager::initParam()
     _globalGoalGpsMsg.pose.orientation.w=1.;
 
     _initTime = ros::Time::now();
-    _managerState = WAITING_CONNECTION;
+    _managerState = SET_MUX;
 }
 
 void BenchmarkManager::odomCallback(const nav_msgs::Odometry::ConstPtr& msg)
@@ -197,10 +208,30 @@ void BenchmarkManager::odomCallback(const nav_msgs::Odometry::ConstPtr& msg)
 	{
 	    ROS_INFO("Initial hover position reached, switch to TESTING mode");
 	    ROS_INFO_STREAM("Benchmark Manager : Sending goal "<< _currentGoalNumber << " :    x:" << _goals.at(_currentGoalNumber).x << " y:" << _goals.at(_currentGoalNumber).y << " z:"<< _goals.at(_currentGoalNumber).z);
-	    
-	    testBeginTime = ros::Time::now();
-	    _correctInitialization = true;
-	    _managerState = TESTING;
+
+	    topic_tools::MuxSelect mux_select;
+	    mux_select.request.topic = _muxAvoidanceInput;
+	    bool mux_ok = false;
+	    for(int k=0; k<3; k++)
+	    {
+		if( _muxClient.call(mux_select))
+		{
+		    ROS_DEBUG_STREAM("Mux switched to "<< _muxAvoidanceInput);
+		    mux_ok=true;
+		    break;
+		}
+	    }
+	    if(mux_ok)
+	    {
+		testBeginTime = ros::Time::now();
+		_correctInitialization = true;
+		_managerState = TESTING;
+	    }else{
+		ROS_ERROR("BenchmarkManager : impossible to set mux");
+		_correctInitialization = false;
+		_stop=true;
+		_managerState = FAILED;
+	    }
 	}
 	break;
     }
@@ -380,10 +411,29 @@ void BenchmarkManager::managerTimerCallback(const ros::TimerEvent& timer)
 
     switch(_managerState)
     {
+    case SET_MUX:
+    {
+	if(timer.current_real-_initTime>ros::Duration(20))
+	{
+	    ROS_ERROR("init time too long");
+	    _stop=true;
+	    _correctInitialization = false;
+	    _managerState = FAILED;
+	    break;
+	}
+	topic_tools::MuxSelect mux_select;
+	mux_select.request.topic = _muxManagerInput;
+	if( _muxClient.call(mux_select))
+	{
+	    ROS_DEBUG_STREAM("Mux switched to "<< _muxManagerInput);
+	    _managerState = WAITING_CONNECTION;
+	}
+    }
+    break;
     case WAITING_CONNECTION:
 	if(timer.current_real-_initTime>ros::Duration(20))
 	{
-	    ROS_WARN("init time too long");
+	    ROS_ERROR("init time too long");
 	    _stop=true;
 	    _correctInitialization = false;
 	    _managerState = FAILED;
@@ -401,7 +451,7 @@ void BenchmarkManager::managerTimerCallback(const ros::TimerEvent& timer)
     case PRE_HOVERING:
 	if(timer.current_real-_preHoveringTime>ros::Duration(20))
 	{
-	    ROS_WARN("pre_hovering time too long");
+	    ROS_ERROR("pre_hovering time too long");
 	    _correctInitialization = false;
 	    _stop = true;
 	    _managerState = FAILED;
@@ -447,7 +497,7 @@ void BenchmarkManager::managerTimerCallback(const ros::TimerEvent& timer)
 	publish_x_y_z_yaw(_initialHoverPos.x, _initialHoverPos.y , _initialHoverPos.z , _initialHoverYaw);
 	if(timer.current_real-_hoveringTime>ros::Duration(60))
 	{
-	    ROS_WARN("Hovering time too long");
+	    ROS_ERROR("Hovering time too long");
 	    _correctInitialization = false;
 	    _stop = true;
 	    _managerState = FAILED;
@@ -480,34 +530,40 @@ void BenchmarkManager::stateCallback(const mavros_msgs::State::ConstPtr& msg)
     _mavState = *msg;
 }
 
-void BenchmarkManager::motorCallback(const mavros_msgs::ActuatorControlConstPtr& msg)
-{    
-    if(_managerState!=TESTING)
-	return;
-    
-//     //compute Power for the current motor speeds
-//     double currentP = 0;
-//     for ( int i= 0; i < 4 ; i ++ )
-//     {
-//         currentP += 2.13e-7 * std::pow(std::abs(msg->angular_velocities[i]),3) 
-//                      + 1.75e-4 * std::pow(std::abs(msg->angular_velocities[i]),2) 
-//                      - 0.0187 * std::pow(std::abs(msg->angular_velocities[i]),1)
-//                      + 1.314;
-//     }
-// compute Power from actuator commands
-    if(msg->group_mix!=0)
+void BenchmarkManager::linkStatesCallback(const gazebo_msgs::LinkStatesConstPtr& msg)
+{
+    ros::Time curT(ros::Time::now());
+    if(_rotor_links.empty())
     {
-	return;
+	std::string str_rotor("rotor_");
+	for(int i=0; i<msg->name.size(); i++)
+	{
+	    std::size_t found = msg->name[i].find(str_rotor);
+	    if(found!=std::string::npos)
+	    {
+		_rotor_links.push_back(i);
+	    }
+	}
     }
-    //TODO compute energy better than that !!!
-    double currentP = msg->controls[3];
+    
+    if(_managerState!=TESTING || _rotor_links.empty())
+	return;
 
+    //compute Power for the current motor speeds
+    
+    double currentP = 0;
+    for(int i=0; i< _rotor_links.size(); i++)
+    {
+	double vel = _rotorVelSlowdown*msg->twist[_rotor_links[i]].angular.z;
+	currentP += _motorCoeff*(vel*vel);
+    }
+    
     if ( prevP != -1 ) // prevP = -1 => first callback call
     {
-        consumedEnergy += ( msg->header.stamp.toSec() - prevT.toSec() ) * currentP /3600.; //from J to Wh
+        consumedEnergy += ( curT.toSec() - prevT.toSec() ) * currentP /3600.; //from J to Wh
     }
     prevP = currentP;
-    prevT = msg->header.stamp;
+    prevT = curT;
 }
 
 void BenchmarkManager::initialHovering()

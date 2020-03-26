@@ -9,6 +9,7 @@
 #include <ros/callback_queue.h>
 #include <std_msgs/Int32.h>
 #include <gazebo_msgs/ModelStates.h>
+#include <gazebo_msgs/LinkStates.h>
 #include <image_transport/image_transport.h>
 #include <sensor_msgs/image_encodings.h>
 #include <geometry_msgs/Vector3Stamped.h>
@@ -41,6 +42,7 @@ public:
 private:
     enum ManagerState
     {
+	SET_MUX,
 	WAITING_CONNECTION,
 	PRE_HOVERING,
 	HOVERING,
@@ -57,9 +59,11 @@ private:
     ros::Subscriber _worldSub;
     ros::Subscriber _odomSub;
     ros::Subscriber _collisionSub; 
-    ros::Subscriber _motorSub;
+    ros::Subscriber _linkStatesSub;
     ros::Subscriber _stateSub;
-
+    
+    std::vector<int> _rotor_links;
+    
 
     //used in core guiding functions
     ros::Publisher _globalGoalPub, _globalGoalGpsPub;
@@ -68,6 +72,11 @@ private:
     ros::ServiceClient _armingClient;
     ros::ServiceClient _setModeClient;
 
+    // mux variables to control who send commands
+    ros::ServiceClient _muxClient;
+    std::string _muxManagerInput, _muxAvoidanceInput;
+    
+    
     void initialHovering();
     void odomCallback(const nav_msgs::Odometry::ConstPtr& msg); 
     void videoTimerCallback(const ros::TimerEvent& timer); 
@@ -99,10 +108,12 @@ private:
 
     //used in code statistical functions
     void collisionCallback(const gazebo_msgs::ContactsState::ConstPtr& msg);
-    void motorCallback(const mavros_msgs::ActuatorControlConstPtr& msg);
+    void linkStatesCallback(const gazebo_msgs::LinkStatesConstPtr& msg);
+
     int _collisionNumber;
     double linearDist;
     double consumedEnergy, prevP;
+    double _motorCoeff, _rotorVelSlowdown;
     ros::Time prevT;
     double travelledDistance;
     ros::Time initialCollisionTime;

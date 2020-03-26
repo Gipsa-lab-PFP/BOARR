@@ -18,10 +18,9 @@
         <remap from="mavros/cmd/arming" to="$(arg mav_name)/mavros/cmd/arming"/>
         <remap from="mavros/set_mode" to="$(arg mav_name)/mavros/set_mode"/>
         <remap from="odometry" to="$(arg mav_name)/odom_gt"/>
-        <remap from="command/output_trajectory" to="$(arg mav_name)/command/trajectory"/>
         <remap from="command/goal" to="$(arg mav_name)/command/goal"/>
         <remap from="command/goal_gps" to="$(arg mav_name)/command/goal_gps"/>
-        <remap from="command/local_position" to="$(arg mav_name)/mavros/setpoint_position/local"/>
+        <remap from="command/local_position" to="benchmark_manager/setpoint_position/local"/>
         <remap from="raw_camera" to="$(arg mav_name)/realsense_plugin/camera/color/image_raw"/>
         <remap from="motor_speed" to="$(arg mav_name)/mavros/actuator_control"/>
         <remap from="bumper_vals" to="$(arg mav_name)/benchmarker/collision"/>
