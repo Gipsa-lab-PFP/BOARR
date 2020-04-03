@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap 'kill $(jobs -p)' SIGINT SIGTERM EXIT
+
 echo "Starting One Noisy Test"
 
 worldNumber=$(find ../gazebo/worlds/ -type f | grep ".world$" | wc -l)
@@ -10,10 +12,10 @@ if (( $worldNumber == 0 )); then
     exit 1
 fi
 
-execNumber=$(find ../testedAlgorithm/ -type f | grep "Exec" | wc -l)
+execNumber=$(find -L ../testedAlgorithm/ -type f | grep "Exec" | wc -l)
 echo "Number of Executables to start: $execNumber"
 
-launchExecNumber=$(find ../testedAlgorithm/ -type f |grep ".launch$" | wc -l)
+launchExecNumber=$(find -L ../testedAlgorithm/ -type f |grep ".launch$" | wc -l)
 echo "Number of launch to call: $launchExecNumber"
 
 if (( $launchExecNumber > 0 )); then
@@ -40,7 +42,7 @@ spawnZ=${txtArray[8]}
 #export spawnZ
 
 echo "Starting the World and the PX4 simulator (No GUI by default)"  
-timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step1.launch world_name:=worlds/forest0 x:=spawnX y:=spawn_Y z:=spawnZ& # > /dev/null 2>&1 & 
+timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false world_name:=forest0 x:=$spawnX y:=$spawnY z:=$spawnZ& # > /dev/null 2>&1 & 
 Proc1=$!
 sleep 5s
 if  (( $launchExecNumber > 0 )); then
@@ -88,3 +90,4 @@ echo "Everything have been killed, End of the script"
 mkdir ../results/generated_files > /dev/null 2>&1 
 mkdir ../results/generated_files/$dirname
 cp ~/.ros/benchmark_results/$dirname/* ../results/generated_files/$dirname/
+
