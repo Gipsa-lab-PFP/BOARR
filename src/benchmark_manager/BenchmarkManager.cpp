@@ -615,7 +615,8 @@ void BenchmarkManager::finalize()
 
     if ( _saveImage || _saveVideo )
     {
-        createImg(); 
+        createImg();
+	outputVideo.release();
     }
 
     if ( _saveSummary )

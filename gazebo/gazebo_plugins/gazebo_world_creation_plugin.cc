@@ -66,7 +66,7 @@ namespace gazebo
 
         heightMapModelNumber=5; //number of available heightmaps
         heightMapSize = 182; //XXX also in form of a constant in line 306 and 333
-        safeMargin=55.; // No tree will be spawned in the closest safemargin to the side of the map on which there will be waypoints
+        safeMargin=56.; // No tree will be spawned in the closest safemargin to the side of the map on which there will be waypoints
         x_min = - heightMapSize/2. + safeMargin; 
         x_max = heightMapSize/2. - safeMargin; 
         y_min = - heightMapSize/2. + safeMargin;

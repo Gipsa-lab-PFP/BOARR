@@ -3,7 +3,8 @@
     <env name="PX4_HOME_LAT" value="45.193100"/>
     <env name="PX4_HOME_LON" value="5.763788"/>
     <env name="PX4_HOME_ALT" value="0"/>
-
+    
+    <arg name="use_noisy_odom" default="false"/>
     
     <!-- MAVROS posix SITL environment launch script -->
     <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
@@ -18,8 +19,8 @@
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
     <arg name="extension" default="_realsense_d435"/>
-    <arg name="world_name" default="forest0"/>
-    <arg name="world" default="$(find avoidance_benchmark)/gazebo/worlds/$(arg world_name).world"/>
+    <arg name="world_name" default="world/forest0"/>
+    <arg name="world" default="$(find avoidance_benchmark)/gazebo/$(arg world_name).world"/>
     <arg name="sdf" default="$(find avoidance_benchmark)/gazebo/models/$(arg vehicle)$(arg extension)/$(arg vehicle)$(arg extension).sdf"/>
     <!--<arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg vehicle)/$(arg vehicle).sdf"/>-->
     <!-- gazebo configs -->
@@ -59,11 +60,25 @@
         <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
     </include>
     
-    <node pkg="avoidance_benchmark" type="odom2posetwist.py" name="odom2posetwist" output="screen">
-        <remap from="odom" to="/odom_gt" />
+    <node unless="$(arg use_noisy_odom)" pkg="avoidance_benchmark" type="odom2posetwist.py" name="odom2posetwist" output="screen">
+        <remap from="odom" to="/odom_gt"/>
         <remap from="pose" to="/mavros/vision_pose/pose" />
         <!--<remap from="pose_cov" to="/mavros/vision_pose/pose_cov" />-->
         <remap from="speed_twist_cov" to="/mavros/vision_speed/speed_twist_cov" />
+        <param name="pos_noise" value="0.001"/>
+        <param name="rot_noise" value="0.001"/>
+        <param name="vel_noise" value="0.001"/>
+        <param name="rotvel_noise" value="0.001"/>
+    </node>
+    <node if="$(arg use_noisy_odom)" pkg="avoidance_benchmark" type="odom2posetwist.py" name="odom2posetwist" output="screen">
+        <remap from="odom" to="/odom_gt"/>
+        <remap from="pose" to="/mavros/vision_pose/pose" />
+        <!--<remap from="pose_cov" to="/mavros/vision_pose/pose_cov" />-->
+        <remap from="speed_twist_cov" to="/mavros/vision_speed/speed_twist_cov" />
+        <param name="pos_noise" value="0.2"/>
+        <param name="rot_noise" value="0.1"/>
+        <param name="vel_noise" value="0.2"/>
+        <param name="rotvel_noise" value="0.1"/>
     </node>
 
     <!-- Multi mux to switch between between the commands providers -->
@@ -78,12 +93,14 @@
 		
     <!-- Add the noisy depth sensor -->
     <node name="noisy_realsense" pkg="avoidance_benchmark" type="noisy_realsense" output="screen">
-       	<remap from="raw_realsense" to="realsense_plugin/camera/depth/image_raw" />
-       	<remap from="perfect_realsense" to="realsense_plugin/camera/depth/perfect_realsense" />
-       	<remap from="noisy_realsense" to="realsense_plugin/camera/depth/noisy_realsense" />
+       	<remap from="raw_realsense" to="realsense_plugin/camera/depth/image_raw"/>
+       	<remap from="/perfect_realsense" to="realsense_plugin/camera/depth/perfect_realsense"/>
+       	<remap from="/noisy_realsense" to="realsense_plugin/camera/depth/noisy_realsense"/>
     </node>
 
     <!-- camera transform publisher-->
-    <node name="tf_color" pkg="tf" type="static_transform_publisher" args="0.1 0.015 0 -1.571 0 -1.571 base_link color 50"/>
+    <!--<node name="tf_color" pkg="tf" type="static_transform_publisher" args="0.1 0.015 0 -1.571 0 -1.571 base_link color 50"/>-->
+    <node name="tf_color" pkg="tf" type="static_transform_publisher" args="0.04 0.015 0.055 -1.5707963 0 -1.2707964 base_link color 50"/>
+
 
 </launch>

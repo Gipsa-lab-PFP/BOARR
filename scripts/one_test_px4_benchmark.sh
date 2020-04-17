@@ -1,6 +1,6 @@
 #!/bin/bash
 
-trap 'kill $(jobs -p)' SIGINT SIGTERM EXIT
+trap 'kill $(jobs -p); exit' SIGINT SIGTERM EXIT
 
 echo "Starting One Noisy Test"
 
@@ -27,13 +27,22 @@ else
     echo "No Launch Found, Starting the executables directly"
 fi
 
+if test -z "$1"
+then
+   WORLD="forest0"
+else
+   WORLD="$1"
+fi
+
+echo "Testing with world ${WORLD}"
+
 # Creating the directory that will contain the output of the test
 mkdir ~/.ros/benchmark_results > /dev/null 2>&1 
 dirname=`date +%Y_%m_%d-%Hh%Mm%Ss`
 mkdir ~/.ros/benchmark_results/$dirname 
 
 # Setting spawn coordinates as environment variables
-read -a txtArray < ../gazebo/worlds/forest0.yaml
+read -a txtArray < ../gazebo/worlds/$WORLD.yaml
 spawnX=${txtArray[2]}
 spawnY=${txtArray[5]}
 spawnZ=${txtArray[8]}
@@ -42,7 +51,7 @@ spawnZ=${txtArray[8]}
 #export spawnZ
 
 echo "Starting the World and the PX4 simulator (No GUI by default)"  
-timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false world_name:=forest0 x:=$spawnX y:=$spawnY z:=$spawnZ& # > /dev/null 2>&1 & 
+timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false world_name:=worlds/$WORLD x:=$spawnX y:=$spawnY z:=$spawnZ& # > /dev/null 2>&1 & 
 Proc1=$!
 sleep 5s
 if  (( $launchExecNumber > 0 )); then
@@ -64,7 +73,7 @@ else
 fi
 sleep 2s
 echo "launching the benchmark manager"
-timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step2.launch world_name:=worlds/forest0 savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true saveImage:=true saveVideo:=true &
+timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step2.launch world_name:=worlds/$WORLD savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true saveImage:=true saveVideo:=false &
 Proc2=$!
 sleep 2s
 echo "Waiting for the completion of the test" 
@@ -84,6 +93,7 @@ else
             wait $tmp
         done
 fi
+
 kill $Proc1
 wait $Proc1
 echo "Everything have been killed, End of the script"

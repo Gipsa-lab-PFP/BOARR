@@ -7,8 +7,8 @@
 
     <include>
       <uri>model://realsense_D435</uri>
-      <!--<pose>0.04 0 0.055 0 -0.3 0</pose>-->
-      <pose>0.1 0.015 0 0 0 0</pose>
+      <pose>0.04 0.015 0.055 0 -0.3 0</pose>
+      <!--<pose>0.1 0.015 0 0 0 0</pose>-->
     </include>
     <joint name="realsense_joint" type="revolute">
       <child>realsense_D435::link</child>
@@ -28,13 +28,13 @@
       <robotNamespace/>
       <xyzOffset>0 0 0</xyzOffset> <!-- [m] [m] [m] -->
       <windDirection>1 0 0</windDirection>
-      <windForceMean>1</windForceMean> <!-- [N] -->
-      <windForceVariance>0.5</windForceVariance> <!-- [N] -->
+      <windForceMean>1</windForceMean> <!-- 1 [N] -->
+      <windForceVariance>0.5</windForceVariance> <!-- 0.5 [N] -->
       <windGustDirection>0 1 0</windGustDirection>
       <windGustDuration>5</windGustDuration> <!-- [s] -->
       <windGustDurationCycle>20</windGustDurationCycle> <!-- [s] -->
-      <windGustForceMean>1</windGustForceMean> <!-- [N] -->
-      <windGustForceVariance>0.5</windGustForceVariance> <!-- [N] -->
+      <windGustForceMean>1</windGustForceMean> <!-- 1 [N] -->
+      <windGustForceVariance>0.5</windGustForceVariance> <!-- 0.5 [N] -->
     </plugin>
 
     <!-- collision_detection -->
@@ -66,16 +66,16 @@
     </plugin>
 
     <!-- noisy  odometry -->
-    <plugin name="noisy_odometry" filename="libgazebo_ros_p3d.so">
+    <!--<plugin name="noisy_odometry" filename="libgazebo_ros_p3d.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>100.0</updateRate>
       <bodyName>iris::base_link</bodyName>
       <topicName>odom</topicName>
-      <gaussianNoise>0.1</gaussianNoise>
+      <gaussianNoise>0.3</gaussianNoise>
       <frameName>world</frameName>
       <xyzOffsets>0 0 0</xyzOffsets>
       <rpyOffsets>0 0 0</rpyOffsets>
-    </plugin>
+    </plugin>-->
 
   </model>
 </sdf>

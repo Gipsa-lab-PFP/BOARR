@@ -31,6 +31,14 @@ void NoisyRealsense::imgCallback(const sensor_msgs::ImageConstPtr& msg)
         std::cout << "Benchmark Manager: Error during the depth callback" << std::endl; 
         return;
     }
+    
+    // mono16 depth image is expressed in mm
+    if(msg->encoding==sensor_msgs::image_encodings::MONO16
+       ||msg->encoding==sensor_msgs::image_encodings::TYPE_16UC1)
+    {
+	cv_ptr->image*=0.001;
+    }
+    
     cv::Mat inputImg;
     cv_ptr->image.copyTo(inputImg);
 
@@ -38,7 +46,8 @@ void NoisyRealsense::imgCallback(const sensor_msgs::ImageConstPtr& msg)
     // set the pixels of infinite depth (nan) at 20m
     double CameraRangeMax = 20;  
     cv::Mat nan_mask = cv::Mat(inputImg != inputImg);
-    inputImg.setTo(cv::Scalar(CameraRangeMax),nan_mask);
+    cv::Mat zero_mask = cv::Mat(inputImg == 0.);
+    inputImg.setTo(cv::Scalar(CameraRangeMax), nan_mask | zero_mask);
     // threshold all pixels that are further than 20m 
     cv::threshold(inputImg, inputImg, CameraRangeMax,CameraRangeMax, CV_THRESH_TRUNC ); 
     
@@ -101,12 +110,12 @@ void NoisyRealsense::imgCallback(const sensor_msgs::ImageConstPtr& msg)
 
     // set to nan all horizontal edges that are greater than a treshold
     cv::Mat out_nan_mask = cv::Mat(edges > 2048.0/4.0); //2048 -> 1 normalized meter according to the opencv doc ( normFactor : 2**(k_size*2-dx-dy-2)
-    outImg.setTo( std::nan("1"), out_nan_mask);
+    outImg.setTo( 0. /*std::nan("1")*/, out_nan_mask);
 
     // last step, both for the perfect and the noisy images, set everything that's under 53cm (see Intel R©RealSenseTM Stereoscopic Depth Cameras, arxiv2017) to nan
     cv::Mat inf53cm = cv::Mat(inputImg < 0.53 );
-    outImg.setTo( std::nan("1"), inf53cm );
-    inputImg.setTo( std::nan("1"), inf53cm );
+    outImg.setTo( 0./*std::nan("1")*/, inf53cm );
+    inputImg.setTo( 0. /*std::nan("1")*/, inf53cm );
 
     sensor_msgs::ImagePtr imgMsg = cv_bridge::CvImage(msg->header, sensor_msgs::image_encodings::TYPE_32FC1, outImg).toImageMsg();
     this->noisyImgPub_.publish(imgMsg);

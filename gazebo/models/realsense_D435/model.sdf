@@ -5,14 +5,15 @@
     <pose>0 0.0175 0.012525 0 0 0</pose>
     <link name="link">
       <inertial>
-        <mass>0.564</mass>
+        <!--<mass>0.564</mass>-->
+        <mass>0.72</mass>
         <inertia>
-          <ixx>0.003881243</ixx>
+          <ixx>7.52e-06</ixx><!--<ixx>0.003881243</ixx>-->
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.000498940</iyy>
+          <iyy>5.23e-05</iyy><!--<iyy>0.000498940</iyy>-->
           <iyz>0</iyz>
-          <izz>0.003879257</izz>
+          <izz>5.23e-05</izz><!--<izz>0.003879257</izz>-->
         </inertia>
         <pose>0 0 0 0 -0 0</pose>
       </inertial>
@@ -151,6 +152,7 @@
       <sensor name="depth" type="depth">
         <pose>0 0 0 0 0 0</pose>
         <camera name="__default__">
+          <!--<horizontal_fov>2.1</horizontal_fov>-->
           <horizontal_fov>1.5917402778188285</horizontal_fov>
           <image>
             <width>640</width>

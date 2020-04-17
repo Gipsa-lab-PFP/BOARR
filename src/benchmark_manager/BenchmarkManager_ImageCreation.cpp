@@ -311,21 +311,21 @@ void BenchmarkManager::drawTable(cv::Mat &img)
     }
     
     //the headline of the table
-    double totalDistToTravel = 0;
-    Point_3D initialPos(CART, _initialHoverPos.x, _initialHoverPos.y, _initialHoverPos.z);
-    Point_3D firstWaypoint(CART, _goals.at(0).x, _goals.at(0).y, _goals.at(0).z);
-    totalDistToTravel += initialPos.dist_to_point(firstWaypoint);
-    int id = 1;
-    while ( id < _goals.size() )
-    {
-            Point_3D idWaypoint(CART, _goals.at(id).x, _goals.at(id).y, _goals.at(id).z);
-            Point_3D idMinusOneWaypoint(CART, _goals.at(id-1).x, _goals.at(id-1).y, _goals.at(id-1).z);
-            totalDistToTravel += idWaypoint.dist_to_point(idMinusOneWaypoint);
-            id ++;
-    }
+    double totalDistToTravel = 1000.;
+//     Point_3D initialPos(CART, _initialHoverPos.x, _initialHoverPos.y, _initialHoverPos.z);
+//     Point_3D firstWaypoint(CART, _goals.at(0).x, _goals.at(0).y, _goals.at(0).z);
+//     totalDistToTravel += initialPos.dist_to_point(firstWaypoint);
+//     int id = 1;
+//     while ( id < _goals.size() )
+//     {
+//             Point_3D idWaypoint(CART, _goals.at(id).x, _goals.at(id).y, _goals.at(id).z);
+//             Point_3D idMinusOneWaypoint(CART, _goals.at(id-1).x, _goals.at(id-1).y, _goals.at(id-1).z);
+//             totalDistToTravel += idWaypoint.dist_to_point(idMinusOneWaypoint);
+//             id ++;
+//     }
     if ( !_stop)
     {
-        std::string completionPercentage = std::to_string(std::min((int)(linearDist/totalDistToTravel*100),99)); 
+        std::string completionPercentage = std::to_string(std::min((int)(100*linearDist/totalDistToTravel),99)); 
         std::string completionPercetageFullString = std::string("Test ") + completionPercentage + std::string("\% Completed");
         cv::putText(img, completionPercetageFullString, cv::Point(100,100),  cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar(0,0,0), 4 );
     }
