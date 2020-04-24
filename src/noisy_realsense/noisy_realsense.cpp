@@ -52,21 +52,32 @@ void NoisyRealsense::imgCallback(const sensor_msgs::ImageConstPtr& msg)
     cv::threshold(inputImg, inputImg, CameraRangeMax,CameraRangeMax, CV_THRESH_TRUNC ); 
     
     // first noising step :
-    // - reduce the size of the input image
+    // - reduce the size of the input image (not realistic -> removed)
     // - randomly move some pixels to the right (the horizontal baseline makes it harder to find the right horizontal position of the pixels)
     // - resize the image to the input size
-    cv::Mat small;
-    cv::resize(inputImg, small, cv::Size(), 1/4.0, 1/4.0, cv::INTER_LINEAR );
-    int x, y;
-    for ( int it = 0; it < 1000 ; it ++ )
-    {
-         int decal = 1 + (int)(rand()/(double)RAND_MAX * 4 );
-         x = 1 + (int)(rand()/(double)RAND_MAX * ( small.cols - decal - 1 ));
-         y = 1 + (int)(rand()/(double)RAND_MAX * ( small.rows - decal - 1 ));
-         small.at<float>(y,x) = small.at<float>(y,x - decal);
-    }
+//     cv::Mat small;
+//     cv::resize(inputImg, small, cv::Size(), 1/4.0, 1/4.0, cv::INTER_LINEAR );
+//     int x, y;
+//     for ( int it = 0; it < 1000 ; it ++ )
+//     {
+//          int decal = 1 + (int)(rand()/(double)RAND_MAX * 4 );
+//          x = 1 + (int)(rand()/(double)RAND_MAX * ( small.cols - decal - 1 ));
+//          y = 1 + (int)(rand()/(double)RAND_MAX * ( small.rows - decal - 1 ));
+//          small.at<float>(y,x) = small.at<float>(y,x - decal);
+//     }
+//     cv::Mat noised1;
+//     cv::resize(small, noised1, inputImg.size(), 0,0, cv::INTER_LINEAR);
+
     cv::Mat noised1;
-    cv::resize(small, noised1, inputImg.size(), 0,0, cv::INTER_LINEAR);
+    inputImg.copyTo(noised1);
+    int x, y;
+    for ( int it = 0; it < 4000 ; it ++ )
+    {
+	int decal = 1 + (int)(8 * rand() / (double)RAND_MAX );
+	x = 1 + (int)(rand()/(double)RAND_MAX * ( noised1.cols - decal - 1 ));
+	y = 1 + (int)(rand()/(double)RAND_MAX * ( noised1.rows - decal - 1 ));
+	noised1.at<float>(y,x) = noised1.at<float>(y,x - decal);
+    }
 
 
     // on this modified image, find the edges (they will be set to nan as the last step)
@@ -106,8 +117,9 @@ void NoisyRealsense::imgCallback(const sensor_msgs::ImageConstPtr& msg)
     
     // add a slight gaussian noise that seem existant in the realsense and that will lower the impact of the double resizing.
     cv::Mat outImg; 
-    cv::GaussianBlur( noised1, outImg, cv::Size(7,7), 7.0/3.0, 7.0/3.0, cv::BORDER_DEFAULT); 
-
+    //cv::GaussianBlur( noised1, outImg, cv::Size(7,7), 7.0/3.0, 7.0/3.0, cv::BORDER_DEFAULT); 
+    cv::bilateralFilter(noised1, outImg, 7, 10, 10, cv::BORDER_DEFAULT);
+    
     // set to nan all horizontal edges that are greater than a treshold
     cv::Mat out_nan_mask = cv::Mat(edges > 2048.0/4.0); //2048 -> 1 normalized meter according to the opencv doc ( normFactor : 2**(k_size*2-dx-dy-2)
     outImg.setTo( 0. /*std::nan("1")*/, out_nan_mask);

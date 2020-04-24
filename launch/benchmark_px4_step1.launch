@@ -19,7 +19,7 @@
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
     <arg name="extension" default="_realsense_d435"/>
-    <arg name="world_name" default="world/forest0"/>
+    <arg name="world_name" default="worlds/forest0"/>
     <arg name="world" default="$(find avoidance_benchmark)/gazebo/$(arg world_name).world"/>
     <arg name="sdf" default="$(find avoidance_benchmark)/gazebo/models/$(arg vehicle)$(arg extension)/$(arg vehicle)$(arg extension).sdf"/>
     <!--<arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg vehicle)/$(arg vehicle).sdf"/>-->
