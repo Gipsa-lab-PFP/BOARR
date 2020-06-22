@@ -44,7 +44,7 @@ for ((i=0; i<worldNumber; i++))
         #export spawnZ
         
         echo -e "Starting the World and the px4 simulator for the $((i+1)) time"  
-        timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false world_name:=benchmark_v2.0_worlds/forest$i x:=$spawnX y:=$spawnY z:=$spawnZ& > /dev/null 2>&1 & 
+        timeout 1600s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false world_name:=benchmark_v2.0_worlds/forest$i x:=$spawnX y:=$spawnY z:=$spawnZ& > /dev/null 2>&1 & 
         Proc1=$!
         sleep 5s
         if  (( $launchExecNumber > 0 )); then
@@ -52,7 +52,7 @@ for ((i=0; i<worldNumber; i++))
             for((j=0; j<launchExecNumber; j++))
                 do
                     tmp=P$j
-                    timeout 1000s roslaunch avoidance_benchmark $j.launch > /dev/null 2>&1 &
+                    timeout 1600s roslaunch avoidance_benchmark $j.launch > /dev/null 2>&1 &
                     eval $tmp=$!
                     sleep 2s
                 done
@@ -61,13 +61,13 @@ for ((i=0; i<worldNumber; i++))
             for((j=0; j<execNumber; j++))
             do
                     tmp=P$j
-                    timeout 1000s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
+                    timeout 1600s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
                     eval $tmp=$!
                     sleep 2s
                 done
         fi
         echo "Launching the benchmark manager"
-        timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step2.launch stopOnCollision:=true world_name:=benchmark_v2.0_worlds/forest$i savingPrefix:=benchmark_results/$dirname/ &
+        timeout 1600s roslaunch avoidance_benchmark benchmark_px4_step2.launch stopOnCollision:=true world_name:=benchmark_v2.0_worlds/forest$i savingPrefix:=benchmark_results/$dirname/ &
         Proc2=$!
         sleep 2s
         echo "Waiting for the completion of the test" 

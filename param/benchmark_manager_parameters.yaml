@@ -8,7 +8,7 @@ initialHovering: {status: true, duration: 7.} # A duration <= 0 will trigger a g
 finalLending: true
 
 # Defining a test Max Length
-testMaxTime: 1000.0 # in s,  allow 1m/s avoidance algorithms to work. It should be tweaked to fit your algorithm speed since it can fasten a lot the full benchmark tests.
+testMaxTime: 1500.0 # in s,  allow 1m/s avoidance algorithms to work. It should be tweaked to fit your algorithm speed since it can fasten a lot the full benchmark tests.
 
 # Video Editing 
 saveSummary: true

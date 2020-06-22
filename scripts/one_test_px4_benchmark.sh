@@ -51,7 +51,7 @@ spawnZ=${txtArray[8]}
 #export spawnZ
 
 echo "Starting the World and the PX4 simulator (No GUI by default)"  
-timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false world_name:=worlds/$WORLD x:=$spawnX y:=$spawnY z:=$spawnZ& # > /dev/null 2>&1 & 
+timeout 1600s roslaunch avoidance_benchmark benchmark_px4_step1.launch gui:=false use_noisy_odom:=false world_name:=worlds/$WORLD x:=$spawnX y:=$spawnY z:=$spawnZ& # > /dev/null 2>&1 & 
 Proc1=$!
 sleep 5s
 if  (( $launchExecNumber > 0 )); then
@@ -59,7 +59,7 @@ if  (( $launchExecNumber > 0 )); then
     for((j=0; j<launchExecNumber; j++))
         do
             tmp=P$j
-            timeout 1000s roslaunch avoidance_benchmark $j.launch & # > /dev/null 2>&1 &
+            timeout 1600s roslaunch avoidance_benchmark $j.launch & # > /dev/null 2>&1 &
             eval $tmp=$!
         done
 else
@@ -67,13 +67,13 @@ else
     for((j=0; j<execNumber; j++))
     do
             tmp=P$j
-            timeout 1000s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
+            timeout 1600s rosrun avoidance_benchmark Exec$j > /dev/null 2>&1 &
             eval $tmp=$!
         done
 fi
 sleep 2s
 echo "launching the benchmark manager"
-timeout 1000s roslaunch avoidance_benchmark benchmark_px4_step2.launch world_name:=worlds/$WORLD savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true saveImage:=true saveVideo:=false &
+timeout 1600s roslaunch avoidance_benchmark benchmark_px4_step2.launch world_name:=worlds/$WORLD savingPrefix:=benchmark_results/$dirname/ showLiveImage:=true saveImage:=true saveVideo:=false &
 Proc2=$!
 sleep 2s
 echo "Waiting for the completion of the test" 
