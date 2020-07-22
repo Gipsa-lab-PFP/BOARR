@@ -1,0 +1,16 @@
+spawnPos: {x: 0 , y: 0 , z: 0.5 }
+
+goals:
+  '1': {x: -2, y: -2, z: 2., minDistToValidate: 0.5}
+  '2': {x: -1, y: 2, z: 2., minDistToValidate: 0.5}
+  '3': {x: 2, y: -1, z: 2., minDistToValidate: 0.5}
+  '4': {x: -2, y: -1, z: 2., minDistToValidate: 0.5}
+  '5': {x: 0, y: 2, z: 2., minDistToValidate: 0.5}
+  '6': {x: 2, y: -1, z: 2., minDistToValidate: 0.5}
+  '7': {x: -2, y: 0, z: 2., minDistToValidate: 0.5}
+  '8': {x: 0, y: 2, z: 2., minDistToValidate: 0.5}
+  '9': {x: 2, y: -1, z: 2., minDistToValidate: 0.5}
+  '10': {x: -2, y: -1, z: 2., minDistToValidate: 0.5}
+  '11': {x: 1, y: 2, z: 2., minDistToValidate: 0.5}
+  '12': {x: 0, y: -2, z: 2., minDistToValidate: 0.5}
+  '13': {x: -1, y: 2, z: 2., minDistToValidate: 0.5}
