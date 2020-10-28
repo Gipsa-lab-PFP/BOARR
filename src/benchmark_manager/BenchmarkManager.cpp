@@ -211,7 +211,18 @@ void BenchmarkManager::odomCallback(const nav_msgs::Odometry::ConstPtr& msg)
 	{
 	    ROS_INFO("Initial hover position reached, switch to TESTING mode");
 	    ROS_INFO_STREAM("Benchmark Manager : Sending goal "<< _currentGoalNumber << " :    x:" << _goals.at(_currentGoalNumber).x << " y:" << _goals.at(_currentGoalNumber).y << " z:"<< _goals.at(_currentGoalNumber).z);
-
+	    
+	    ROS_INFO("SEND POSITION COMMAND");
+	    
+	    mavros_msgs::SetMode hold_set_mode;
+	    hold_set_mode.request.custom_mode = "POSCTL";
+	    hold_set_mode.request.base_mode = 0;		
+	    if( _setModeClient.call(hold_set_mode) &&
+		hold_set_mode.response.mode_sent)
+	    {
+		ROS_INFO("POSITION mode enabled");
+	    }
+	    
 	    topic_tools::MuxSelect mux_select;
 	    mux_select.request.topic = _muxAvoidanceInput;
 	    bool mux_ok = false;
@@ -226,9 +237,11 @@ void BenchmarkManager::odomCallback(const nav_msgs::Odometry::ConstPtr& msg)
 	    }
 	    if(mux_ok)
 	    {
-		testBeginTime = ros::Time::now();
-		_correctInitialization = true;
-		_managerState = TESTING;
+		//testBeginTime = ros::Time::now();
+		//_correctInitialization = true;
+		//_managerState = TESTING;
+		_hoveringTime = ros::Time::now();
+		_managerState = HOLDING;
 	    }else{
 		ROS_ERROR("BenchmarkManager : impossible to set mux");
 		_correctInitialization = false;
@@ -507,7 +520,25 @@ void BenchmarkManager::managerTimerCallback(const ros::TimerEvent& timer)
 	    _managerState = FAILED;
 	}
 	break;
+    case HOLDING:
+	if(timer.current_real-_hoveringTime>ros::Duration(2))
+	{
+	    ROS_INFO("SEND OFFBOARD COMMAND");
+	    mavros_msgs::SetMode offb_set_mode;
+	    offb_set_mode.request.custom_mode = "OFFBOARD";
+	    offb_set_mode.request.base_mode = 0;		
+	    if( _setModeClient.call(offb_set_mode) &&
+		offb_set_mode.response.mode_sent)
+	    {
+		ROS_INFO("Offboard enabled");
+	    }
+	    
+	    testBeginTime = ros::Time::now();
+	    _correctInitialization = true;
+	    _managerState = TESTING;
+	}
 	
+	break;
     case TESTING:
     {
 	// Current Test time

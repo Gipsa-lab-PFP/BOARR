@@ -24,7 +24,7 @@ find_package( OpenCV REQUIRED )
 
 set( CMAKE_CXX_STANDARD 11) #needed in the benchmark manager and in the wind plugin
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON ) #needed for Vim YouCompleteMe plugin
-set( CMAKE_CXX_FLAGS_RELEASE -O3 -DNDEBUG )
+#set( CMAKE_CXX_FLAGS_RELEASE -O3 -DNDEBUG )
 
 catkin_package()
 
